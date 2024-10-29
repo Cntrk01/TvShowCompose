@@ -4,13 +4,13 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.tvshow.tvshowapp.data.network.TvShowService
 import com.tvshow.tvshowapp.domain.model.TvShow
-import com.tvshow.tvshowapp.util.toErrorResult
+import com.tvshow.tvshowapp.util.UIError
 
 class TvShowPagingSource(
     private val tvShowService: TvShowService
 ) : PagingSource<Int, TvShow>(){
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShow> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int,TvShow> {
         val page = params.key ?: 1
 
         return try {
@@ -23,8 +23,9 @@ class TvShowPagingSource(
                 nextKey = if (response.page >= response.pages) null else page + 1
             )
         } catch (e: Exception) {
-            val error = e.toErrorResult()
-            LoadResult.Error(Exception(error.message,error.cause))
+            val error =UIError(e)
+
+            LoadResult.Error(Exception(error.message))
         }
     }
 

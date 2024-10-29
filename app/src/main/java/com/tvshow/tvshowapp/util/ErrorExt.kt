@@ -1,61 +1,101 @@
 package com.tvshow.tvshowapp.util
 
-import androidx.paging.PagingSource
 import com.google.gson.JsonParseException
 import kotlinx.coroutines.TimeoutCancellationException
 import retrofit2.HttpException
 import java.io.IOException
 
-data class ErrorResult(
-    val message: String,
-    val cause: Throwable? = null
-)
+//Companion objecte yazdığım bu method ile constructor görevi gibi çalışıyor.
+//UiError consturctoruna message vericektim val message fakat kullanılmayan yerlerde bile gereksiz değer setlemesi yapacağı için bunun yerine class içerisinde ortak olduğu için abstract olarak tanımladım.
+//sealed class Tanımlandığı paket dışında bir daha impl edilmesini istemedim.Nesne de oluşturulamaz.Miras edilebilir.
+//enummlara benzer ama daha geniş kullanım alanı var.;
+//sealed class imp eden tüm classlar compile timda tüm impl tipi biliniyor.
+//Genelde alacağım hatalar üzerinde çalışma yaparak tanımlama yaptım.Bilmediğim durum varsa CustomError tanımladım.
+sealed class UIError : UiScreenDelegate {
+    abstract val message : String
 
-fun Throwable.toErrorResult(): ErrorResult {
-    val message = when (this) {
-        is IOException -> "Check Your Internet Connection"
-        is HttpException -> when (this.code()) {
-            404 -> "Page Not Found...404 Error"
-            500 -> "Server error. Please try again later."
-            else -> "An unknown HTTP error: ${this.message}"
+    override fun handle(value: UIError, isShow: Boolean) {
+        onHttpError{ message, code ->
+
         }
-        is JsonParseException -> "An error occurred while processing data: ${this.message}"
-        is TimeoutCancellationException -> "There was no response from the server. Please try again."
-        else -> "Something went wrong: ${this.message}"
     }
-    return ErrorResult(message, this)
-}
 
+    internal data class HttpError(val code: Int, override val message: String) : UIError()
+    private data class NetworkError(override val message: String) : UIError()
+    private data class ParsingError(override val message: String) : UIError()
+    private data class TimeoutError(override val message: String) : UIError()
+    private data class CustomError(override val message: String) : UIError()
 
+    companion object {
+        operator fun invoke(throwable: Throwable): UIError {
+            return when (throwable) {
+                is IOException -> NetworkError(throwable.message ?: "")
 
-private fun <T : Any> Throwable.toLoadResultError(): PagingSource.LoadResult.Error<Int, T> {
-    val message = when (this) {
-        is IOException -> "Check Your Internet Connection"
-        is HttpException -> when (this.code()) {
-            404 -> "Page Not Found...404 Error"
-            500 -> "Server error. Please try again later."
-            else -> "An unknown HTTP error: ${this.message}"
+                is HttpException -> {
+                    when (throwable.code()) {
+                        404 ->  HttpError(throwable.code(), "Page Not Found...404 Error")
+                        500 -> HttpError(throwable.code(), "Server error. Please try again later.")
+                        else ->  HttpError(throwable.code(), "An unknown HTTP error")
+                    }
+                }
+
+                is JsonParseException -> {
+                    ParsingError("Veri işlenirken hata oluştu: ${throwable.message}")
+                }
+
+                is TimeoutCancellationException -> {
+                    TimeoutError("Sunucudan yanıt alınamadı.")
+                }
+
+                else -> CustomError(throwable.message ?: "Bilinmeyen bir hata oluştu.")
+           }
         }
-        is JsonParseException -> "An error occurred while processing data: ${this.message}"
-        is TimeoutCancellationException -> "There was no response from the server. Please try again."
-        else -> "Something went wrong: ${this.message}"
+
+        operator fun invoke(code: Int, message: String) : UIError {
+            return HttpError(code, message)
+        }
+
+        operator fun invoke(code: Int = 0, message: String = "", throwable: Throwable? = null) : UIError{
+            return when (throwable) {
+                is IOException -> NetworkError(throwable.message ?: "")
+
+                is HttpException -> {
+                    HttpError(throwable.code(), throwable.message ?: "HTTP Hatası")
+                }
+
+                is JsonParseException -> {
+                    ParsingError("Veri işlenirken hata oluştu: ${throwable.message}")
+                }
+
+                is TimeoutCancellationException -> {
+                    TimeoutError("Sunucudan yanıt alınamadı.")
+                }
+
+                else -> CustomError(throwable?.message ?: "Bilinmeyen bir hata oluştu.")
+            }
+        }
     }
-    return PagingSource.LoadResult.Error(Exception(message, this))
 }
 
-sealed class UiError {
-    data object NetworkError : UiError()
-    data class HttpError(val code: Int, val message: String) : UiError()
-    data class ParsingError(val message: String) : UiError()
-    data class TimeoutError(val message: String) : UiError()
-    data class UnknownError(val message: String) : UiError()
-}
-fun Throwable.toUiError(): UiError {
-    return when (this) {
-        is IOException -> UiError.NetworkError
-        is HttpException -> UiError.HttpError(this.code(), this.message ?: "Bilinmeyen HTTP hatası")
-        is JsonParseException -> UiError.ParsingError("Veri işlenirken hata oluştu")
-        is TimeoutCancellationException -> UiError.TimeoutError("Sunucudan yanıt alınamadı")
-        else -> UiError.UnknownError("Bir şeyler ters gitti: ${this.message}")
+fun UIError.onHttpError(callback: (String, Int) -> Unit): UIError = apply {
+    if (this is UIError.HttpError) {
+        callback(message, code)
     }
 }
+
+fun interface UiScreenDelegate{
+    fun handle(value: UIError,isShow  : Boolean)
+}
+
+//class UiScreenDelegateImpl(
+//    private val value  : UIError,
+//    private val isShow : Boolean,
+//) : UiScreenDelegate{
+//    override fun handle(value: UIError, isShow: Boolean) {
+//        if (isShow){
+//            value.onHttpError { message, code ->
+//
+//            }
+//        }
+//    }
+//}
