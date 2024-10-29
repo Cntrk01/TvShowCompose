@@ -1,4 +1,4 @@
-package com.tvshow.myapplication.ui.theme
+package com.tvshow.tvshowapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
