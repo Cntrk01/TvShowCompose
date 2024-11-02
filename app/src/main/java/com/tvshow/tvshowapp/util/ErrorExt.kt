@@ -11,14 +11,8 @@ import java.io.IOException
 //enummlara benzer ama daha geniş kullanım alanı var.;
 //sealed class imp eden tüm classlar compile timda tüm impl tipi biliniyor.
 //Genelde alacağım hatalar üzerinde çalışma yaparak tanımlama yaptım.Bilmediğim durum varsa CustomError tanımladım.
-sealed class UIError : UiScreenDelegate {
-    abstract val message : String
-
-    override fun handle(value: UIError, isShow: Boolean) {
-        onHttpError{ message, code ->
-
-        }
-    }
+sealed class UIError : Exception(){
+    abstract override val message : String
 
     internal data class HttpError(val code: Int, override val message: String) : UIError()
     private data class NetworkError(override val message: String) : UIError()
@@ -40,14 +34,14 @@ sealed class UIError : UiScreenDelegate {
                 }
 
                 is JsonParseException -> {
-                    ParsingError("Veri işlenirken hata oluştu: ${throwable.message}")
+                    ParsingError("Json Parse Exception: ${throwable.message}")
                 }
 
                 is TimeoutCancellationException -> {
-                    TimeoutError("Sunucudan yanıt alınamadı.")
+                    TimeoutError("Server Timeout Error")
                 }
 
-                else -> CustomError(throwable.message ?: "Bilinmeyen bir hata oluştu.")
+                else -> CustomError(throwable.message ?: "UnknownError.")
            }
         }
 
@@ -60,18 +54,18 @@ sealed class UIError : UiScreenDelegate {
                 is IOException -> NetworkError(throwable.message ?: "")
 
                 is HttpException -> {
-                    HttpError(throwable.code(), throwable.message ?: "HTTP Hatası")
+                    HttpError(throwable.code(), throwable.message ?: "HTTP Exception")
                 }
 
                 is JsonParseException -> {
-                    ParsingError("Veri işlenirken hata oluştu: ${throwable.message}")
+                    ParsingError("Json Parse Exception: ${throwable.message}")
                 }
 
                 is TimeoutCancellationException -> {
-                    TimeoutError("Sunucudan yanıt alınamadı.")
+                    TimeoutError("Server Timeout Error")
                 }
 
-                else -> CustomError(throwable?.message ?: "Bilinmeyen bir hata oluştu.")
+                else -> CustomError(throwable?.message ?: "UnknownError.")
             }
         }
     }
@@ -82,20 +76,3 @@ fun UIError.onHttpError(callback: (String, Int) -> Unit): UIError = apply {
         callback(message, code)
     }
 }
-
-fun interface UiScreenDelegate{
-    fun handle(value: UIError,isShow  : Boolean)
-}
-
-//class UiScreenDelegateImpl(
-//    private val value  : UIError,
-//    private val isShow : Boolean,
-//) : UiScreenDelegate{
-//    override fun handle(value: UIError, isShow: Boolean) {
-//        if (isShow){
-//            value.onHttpError { message, code ->
-//
-//            }
-//        }
-//    }
-//}
