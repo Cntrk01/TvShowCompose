@@ -15,4 +15,9 @@ interface TvShowService {
     suspend fun getTvShowDetails(
         @Query("q") permaLink: String
     ): TvShowDetail
+
+    @GET("show-details")
+    suspend fun getTvShowDetailsById(
+        @Query("q") id: Int
+    ): TvShowDetail
 }
