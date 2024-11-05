@@ -3,6 +3,8 @@ package com.tvshow.tvshowapp.data.mapper
 import com.tvshow.tvshowapp.domain.model.TvShow
 
 data class TvShowMainPage(
+    val permaLink : String,
+    val id : Int,
     val imageThumbnailPath : String,
     val name : String,
     val startDate : String,
@@ -12,12 +14,15 @@ data class TvShowMainPage(
 )
 
 fun TvShow.toShowMapper(): TvShowMainPage {
+
     return TvShowMainPage(
-        name = name,
-        imageThumbnailPath = imageThumbnailPath,
-        startDate = startDate,
-        country = country,
-        network = network,
-        status = status
+        permaLink = permalink ?: "",
+        id = id ?: 0,
+        name = name ?: "",
+        imageThumbnailPath = imageThumbnailPath ?: "",
+        startDate = startDate ?: "",
+        country = country ?: "",
+        network = network ?: "",
+        status = status ?: ""
     )
 }
