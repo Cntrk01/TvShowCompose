@@ -100,7 +100,7 @@ fun HomePageItemComposable(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Started on: $startDate",
+                text = "Started On: $startDate",
                 color = Color.Gray,
                 fontSize = 12.sp,
                 maxLines = 1,

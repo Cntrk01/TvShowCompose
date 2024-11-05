@@ -14,6 +14,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.tvshow.tvshowapp.navigation.NavGraph
+import com.tvshow.tvshowapp.navigation.Route
 import com.tvshow.tvshowapp.presentation.home.HomePageComposable
 import com.tvshow.tvshowapp.ui.theme.TvShowComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +29,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
             TvShowComposeTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     Scaffold (
@@ -38,7 +42,10 @@ class MainActivity : ComponentActivity() {
                         Column (
                             modifier = Modifier.padding(paddingValues)
                         ){
-                            HomePageComposable()
+                            NavGraph(
+                                startDestination =Route.Home.route ,
+                                navController = navController
+                            )
                         }
                     }
                 }

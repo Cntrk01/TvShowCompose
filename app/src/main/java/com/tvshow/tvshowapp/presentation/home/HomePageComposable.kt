@@ -1,5 +1,6 @@
 package com.tvshow.tvshowapp.presentation.home
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -24,6 +26,7 @@ fun HomePageComposable(
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val lazyPagingItems = homeViewModel.tvShowPagingData.collectAsLazyPagingItems()
+    val context = LocalContext.current
 
     LazyColumn(
         modifier = Modifier
@@ -34,11 +37,19 @@ fun HomePageComposable(
                 HomePageItemComposable(
                     modifier = Modifier.clickable(
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(
-                            color = Color.LightGray,
-                        ),
+                        indication = rememberRipple(color = Color.LightGray),
                         onClick = {
+                            when {
+                                item.permaLink.isNotEmpty() -> {
 
+                                }
+                                item.id != 0 -> {
+
+                                }
+                                else -> {
+                                    Toast.makeText(context,"No Link Found",Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     ),
                     name = item.name,
