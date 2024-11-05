@@ -8,9 +8,9 @@ import com.tvshow.tvshowapp.util.UIError
 
 class TvShowPagingSource(
     private val tvShowService: TvShowService
-) : PagingSource<Int, List<TvShow>>(){
+) : PagingSource<Int, TvShow>(){
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int,List<TvShow>> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int,TvShow> {
         val page = params.key ?: 1
 
         return try {
@@ -18,7 +18,7 @@ class TvShowPagingSource(
             val tvShows = response.tvShows
 
             LoadResult.Page(
-                data = listOf(tvShows),
+                data = tvShows,
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (response.page >= response.pages) null else page + 1
             )
@@ -29,7 +29,7 @@ class TvShowPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, List<TvShow>>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, TvShow>): Int? {
         return state.anchorPosition?.let { position ->
             state.closestPageToPosition(position)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(position)?.nextKey?.minus(1)

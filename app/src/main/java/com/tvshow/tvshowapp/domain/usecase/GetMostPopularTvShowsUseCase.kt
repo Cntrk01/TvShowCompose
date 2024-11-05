@@ -8,23 +8,15 @@ import com.tvshow.tvshowapp.domain.repository.TvShowRepository
 import com.tvshow.tvshowapp.util.Response
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetMostPopularTvShowsUseCase(
+class GetMostPopularTvShowsUseCase @Inject constructor(
     private val repository: TvShowRepository
 ) {
-    suspend operator fun invoke(page: Int): Flow<Response<PagingData<List<TvShowMainPage>>>> {
-        return repository.getMostPopularTvShows(page).map { response ->
-            when (response) {
-                is Response.Loading -> Response.Loading()
-                is Response.Error -> Response.Error(response.message.toString(), response.cause)
-                is Response.Success -> {
-                    val mappedData = response.data?.map { pagingData ->
-                        pagingData.map { tvShow ->
-                            tvShow.toShowMapper()
-                        }
-                    }
-                    Response.Success(mappedData)
-                }
+    suspend operator fun invoke(): Flow<PagingData<TvShowMainPage>> {
+        return repository.getMostPopularTvShows().map { response ->
+            response.map { pagingData ->
+                pagingData.toShowMapper()
             }
         }
     }

@@ -8,7 +8,7 @@ import com.tvshow.tvshowapp.util.Response
 import kotlinx.coroutines.flow.Flow
 
 interface TvShowRepository {
-    suspend fun getMostPopularTvShows(page: Int = 1): Flow<Response<PagingData<List<TvShow>>>>
+    suspend fun getMostPopularTvShows(): Flow<PagingData<TvShow>>
 
     suspend fun getTvShowDetails(permaLink: String): LiveData<Response<TvShowDetail>>
 }
