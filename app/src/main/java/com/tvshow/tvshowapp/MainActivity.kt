@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tvshow.tvshowapp.navigation.NavGraph
 import com.tvshow.tvshowapp.navigation.Route
@@ -34,8 +35,12 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     Scaffold (
                         topBar = {
+                            val currentBackStackEntry = navController.currentBackStackEntryAsState()
+                            val currentRoute = currentBackStackEntry.value?.destination?.route
+                            val topBarTitle = Route.allRoutes.find { it.route == currentRoute }?.topBarTitle ?: "Tv Show App"
+
                             TopAppBar(
-                                title = { Text("Tv Show App") }
+                                title = { Text(topBarTitle) }
                             )
                         }
                     ){ paddingValues ->
