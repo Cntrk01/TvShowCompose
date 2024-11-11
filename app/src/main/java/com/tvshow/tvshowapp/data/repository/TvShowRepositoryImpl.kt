@@ -33,4 +33,16 @@ class TvShowRepositoryImpl(
             }
         }
     }
+
+    override suspend fun getTvShowDetailsById(id: Int): LiveData<Response<TvShowDetail>> {
+        return liveData {
+            emit(Response.Loading())
+            try {
+                val response = tvShowService.getTvShowDetailsById(id)
+                emit(Response.Success(response))
+            } catch (e: Exception) {
+                emit(Response.Error(e.message.toString(), e.cause))
+            }
+        }
+    }
 }

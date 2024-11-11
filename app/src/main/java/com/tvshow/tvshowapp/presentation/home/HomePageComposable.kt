@@ -23,13 +23,15 @@ import com.tvshow.tvshowapp.uielements.HomePageItemComposable
 
 @Composable
 fun HomePageComposable(
-    homeViewModel: HomeViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    onItemClicked : (Any) -> Unit,
 ) {
     val lazyPagingItems = homeViewModel.tvShowPagingData.collectAsLazyPagingItems()
     val context = LocalContext.current
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .padding(10.dp)
     ) {
         items(lazyPagingItems.itemCount) { tvShow ->
@@ -39,17 +41,18 @@ fun HomePageComposable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(color = Color.LightGray),
                         onClick = {
-                            when {
+                            val result: Any = when {
                                 item.permaLink.isNotEmpty() -> {
-
+                                    item.permaLink
                                 }
                                 item.id != 0 -> {
-
+                                    item.id
                                 }
                                 else -> {
                                     Toast.makeText(context,"No Link Found",Toast.LENGTH_SHORT).show()
                                 }
                             }
+                            onItemClicked(result)
                         }
                     ),
                     name = item.name,

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.tvshow.tvshowapp.presentation.detail.DetailPageComposable
 import com.tvshow.tvshowapp.presentation.home.HomePageComposable
 
 @Composable
@@ -14,13 +15,25 @@ fun NavGraph(
     NavHost(
         navController = navController,
         startDestination = startDestination,
-    ){
-        composable(route = Route.Home.route){
-            HomePageComposable()
+    ) {
+        composable(route = Route.Home.route) {
+            HomePageComposable(
+                onItemClicked = { linkOrId->
+                    //Saved State Handle key-value(anahtar-değer) depolama mekanizması olarak işlev görür.
+                    //Architecture Components ViewModel kütüphanesinde tanıtılan bir sınıftır
+                    //Ekran döndme,activity,fragment sonlanma durumlarında veriyi tutmaya devam eder.
+                    //!Veri tutarken boyutunu dikkate almalıyız çünkü büyük verilerle işlem yapıyorsak bize performans sorunlarına sebebiyet verebilir
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = Route.Detail.route,
+                        value = linkOrId
+                    )
+                    navController.navigate(route = Route.Detail.route + "/$linkOrId")
+                }
+            )
         }
 
-        composable(route = Route.Detail.route){
-
+        composable(route = Route.Detail.route + "/{id}") {
+            DetailPageComposable()
         }
     }
 }

@@ -11,4 +11,6 @@ interface TvShowRepository {
     suspend fun getMostPopularTvShows(): Flow<PagingData<TvShow>>
 
     suspend fun getTvShowDetails(permaLink: String): LiveData<Response<TvShowDetail>>
+
+    suspend fun getTvShowDetailsById(id: Int): LiveData<Response<TvShowDetail>>
 }

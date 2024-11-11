@@ -1,7 +1,6 @@
 package com.tvshow.tvshowapp.domain.model
 
 import com.google.gson.annotations.SerializedName
-import com.tvshow.tvshowapp.data.mapper.TvShowMainPage
 
 data class TvShow(
     val country: String?,

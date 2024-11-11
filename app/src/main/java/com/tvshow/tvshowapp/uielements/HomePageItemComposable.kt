@@ -58,6 +58,10 @@ fun HomePageItemComposable(
                 contentAlignment = Alignment.TopStart
             ) {
                 AsyncImage(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(8.dp))
+                        .align(Alignment.Center),
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(imageUrl)
                         .crossfade(true)
@@ -65,11 +69,6 @@ fun HomePageItemComposable(
                     error = painterResource(id = R.drawable.notfoundimage),
                     contentDescription = "Tv Show Image",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(8.dp))
-                        .align(Alignment.Center),
-                    onError = { /* Hiçbir şey yapma, boş bırak */ }
                 )
             }
         }

@@ -22,10 +22,11 @@ import com.tvshow.tvshowapp.presentation.home.HomePageComposable
 import com.tvshow.tvshowapp.ui.theme.TvShowComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
