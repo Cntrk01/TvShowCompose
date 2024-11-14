@@ -33,6 +33,7 @@ runtimeLivedata = "1.6.8"
 junitKtx = "1.2.1"
 uiTestJunit4Android = "1.6.8"
 pagingCompose = "3.3.2"
+runtimeLivedataVersion = "1.7.5"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -77,6 +78,7 @@ ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
+runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedataVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
