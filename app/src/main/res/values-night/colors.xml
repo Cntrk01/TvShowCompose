@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="topBarTextColor">#E6000000</color>
-    <color name="topBarIconColor">#E6000000</color>
+    <color name="topBarTextColor">#FFFFFF</color>
+    <color name="topBarIconColor">#FFFFFF</color>
 
-    <color name="cardBackground">#DFEFEFEF</color>
+    <color name="cardBackground">#E6161616</color>
     <color name="cardBorder">#E0E0E0</color>
-
-    <color name="showName">#8F6D6D6D</color>
+    <color name="showName">#E9FFFFFF</color>
     <color name="showPlatform">#7C5FB1</color>
     <color name="showCountry">#D04F45</color>
 </resources>

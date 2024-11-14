@@ -5,14 +5,13 @@ import kotlinx.coroutines.TimeoutCancellationException
 import retrofit2.HttpException
 import java.io.IOException
 
-//Companion objecte yazdığım bu method ile constructor görevi gibi çalışıyor.
+//Companion objecte yazdığım bu method ile constructor görevi sağlar.
 //UiError consturctoruna message vericektim val message fakat kullanılmayan yerlerde bile gereksiz değer setlemesi yapacağı için bunun yerine class içerisinde ortak olduğu için abstract olarak tanımladım.
 //sealed class Tanımlandığı paket dışında bir daha impl edilmesini istemedim.Nesne de oluşturulamaz.Miras edilebilir.
 //enummlara benzer ama daha geniş kullanım alanı var.;
 //sealed class imp eden tüm classlar compile timda tüm impl tipi biliniyor.
 //Genelde alacağım hatalar üzerinde çalışma yaparak tanımlama yaptım.Bilmediğim durum varsa CustomError tanımladım.
 sealed class UIError : Exception(){
-    abstract override val message : String
 
     internal data class HttpError(val code: Int, override val message: String) : UIError()
     private data class NetworkError(override val message: String) : UIError()

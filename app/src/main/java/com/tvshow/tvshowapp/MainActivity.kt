@@ -5,44 +5,98 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.tvshow.myapplication.R
+import com.tvshow.tvshowapp.navigation.NavGraph
+import com.tvshow.tvshowapp.navigation.Route
 import com.tvshow.tvshowapp.presentation.home.HomePageComposable
 import com.tvshow.tvshowapp.ui.theme.TvShowComposeTheme
+import com.tvshow.tvshowapp.uielements.header.HeaderType
+import com.tvshow.tvshowapp.uielements.header.TopBarComposable
 import dagger.hilt.android.AndroidEntryPoint
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            SetThemeColor()
+
+            val navController = rememberNavController()
             TvShowComposeTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    Scaffold (
+                Surface(modifier = Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding()
+                ) {
+                    Scaffold(
                         topBar = {
-                            TopAppBar(
-                                title = { Text("Tv Show App") }
-                            )
+                            when (navController.currentBackStackEntryAsState().value?.destination?.route) {
+                                Route.Home.route -> {
+                                    TopBarComposable(
+                                        headerType = HeaderType.SIMPLE,
+                                        headerTitle = "Tv Shows"
+                                    )
+                                }
+
+                                Route.Detail.route + "/{id}"-> {
+                                    TopBarComposable(
+                                        headerType = HeaderType.MULTI,
+                                        headerTitle = "Tv Show Detail",
+                                        backClick = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
+                            }
                         }
-                    ){ paddingValues ->
+                    ) { paddingValues ->
                         Column (
                             modifier = Modifier.padding(paddingValues)
                         ){
-                            HomePageComposable()
+                            NavGraph(
+                                startDestination = Route.Home.route,
+                                navController = navController
+                            )
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun SetThemeColor(){
+    val isSystemInDarkMode = isSystemInDarkTheme()
+    val systemController = rememberSystemUiController()
+    val systemTheme = if (isSystemInDarkMode)
+        colorResource(id = R.color.cardBackground)
+    else colorResource(id = R.color.cardBackground)
+    SideEffect {
+        systemController.setSystemBarsColor(
+            color = systemTheme,
+            darkIcons = !isSystemInDarkMode
+        )
     }
 }

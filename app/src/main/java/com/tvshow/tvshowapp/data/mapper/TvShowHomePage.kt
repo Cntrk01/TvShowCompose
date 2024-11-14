@@ -2,7 +2,7 @@ package com.tvshow.tvshowapp.data.mapper
 
 import com.tvshow.tvshowapp.domain.model.TvShow
 
-data class TvShowMainPage(
+data class TvShowHomePage(
     val permaLink : String,
     val id : Int,
     val imageThumbnailPath : String,
@@ -13,9 +13,9 @@ data class TvShowMainPage(
     val status : String,
 )
 
-fun TvShow.toShowMapper(): TvShowMainPage {
+fun TvShow.toShowMapper(): TvShowHomePage {
 
-    return TvShowMainPage(
+    return TvShowHomePage(
         permaLink = permalink ?: "",
         id = id ?: 0,
         name = name ?: "",

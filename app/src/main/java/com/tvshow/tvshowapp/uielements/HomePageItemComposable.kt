@@ -1,6 +1,7 @@
 package com.tvshow.tvshowapp.uielements
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,7 +36,7 @@ fun HomePageItemComposable(
     modifier: Modifier = Modifier,
     name: String,
     network: String,
-    startDate: String,
+    country: String,
     status: String,
     imageUrl: String
 ) {
@@ -42,14 +44,23 @@ fun HomePageItemComposable(
         modifier = modifier
             .fillMaxWidth()
             .height(110.dp)
-            .background(Color.DarkGray, shape = RoundedCornerShape(8.dp)),
-       horizontalArrangement = Arrangement.Start,
+            .background(
+                color = colorResource(id = R.color.cardBackground),
+                shape = RoundedCornerShape(8.dp)
+            )
+            .border(
+                1.dp,
+                color = colorResource(id = R.color.cardBorder),
+                shape = RoundedCornerShape(8.dp)
+            ),
+
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
-        ){
+        ) {
             Box(
                 modifier = Modifier
                     .width(80.dp)
@@ -58,6 +69,10 @@ fun HomePageItemComposable(
                 contentAlignment = Alignment.TopStart
             ) {
                 AsyncImage(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(8.dp))
+                        .align(Alignment.Center),
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(imageUrl)
                         .crossfade(true)
@@ -65,11 +80,6 @@ fun HomePageItemComposable(
                     error = painterResource(id = R.drawable.notfoundimage),
                     contentDescription = "Tv Show Image",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(8.dp))
-                        .align(Alignment.Center),
-                    onError = { /* Hiçbir şey yapma, boş bırak */ }
                 )
             }
         }
@@ -82,7 +92,7 @@ fun HomePageItemComposable(
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = name,
-                color = Color.White,
+                color = colorResource(id = R.color.showName),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
@@ -92,7 +102,7 @@ fun HomePageItemComposable(
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = network,
-                color = Color.Yellow,
+                color = colorResource(id = R.color.showPlatform),
                 fontSize = 14.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -100,8 +110,8 @@ fun HomePageItemComposable(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Started on: $startDate",
-                color = Color.Gray,
+                text = country,
+                color = colorResource(id = R.color.showCountry),
                 fontSize = 12.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -126,7 +136,7 @@ fun HomePageItemPreviewComposable() {
     HomePageItemComposable(
         name = "Title",
         network = "Network",
-        startDate = "2023-01-01",
+        country = "2023-01-01",
         status = "Running",
         imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLmB06g043adPuLLEEOgt16YI45b-VjJhIFA&s"
     )
