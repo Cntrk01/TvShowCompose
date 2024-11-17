@@ -58,7 +58,7 @@ fun TopBarComposable(
         Text(
             modifier = Modifier.padding(start = 15.dp),
             text = headerTitle,
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             color = colorResource(id = R.color.topBarTextColor),
             fontWeight = FontWeight.Bold
         )
