@@ -75,7 +75,6 @@ import com.tvshow.tvshowapp.uielements.UiElementsExt.getColorFromResource
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailPageItemComposable(
     modifier: Modifier = Modifier,
@@ -91,50 +90,63 @@ fun DetailPageItemComposable(
             TvShowDescription(attribute = attribute.toTvShowDescription())
         }
         item {
-            Spacer(modifier = Modifier.height(10.dp))
+            TvShowInformation(attribute = attribute)
+        }
+    }
+}
 
-            val tabTitles = listOf("Links", "Description", "Episodes")
-            val pagerState = rememberPagerState(
-                initialPage = 0,
-                pageCount = {
-                    tabTitles.size
-                }
-            )
-            val coroutineScope = rememberCoroutineScope()
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+internal fun TvShowInformation(
+    attribute: TvShow
+){
+    val tabTitles = listOf("Links", "Description", "Episodes")
 
-            Column(modifier = Modifier) {
-                TabRow(
-                    selectedTabIndex = pagerState.currentPage,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    tabTitles.forEachIndexed { index, title ->
-                        Tab(
-                            selected = pagerState.currentPage == index,
-                            onClick = {
-                                coroutineScope.launch {
-                                    pagerState.animateScrollToPage(index)
-                                }
-                            },
-                            text = { Text(title) }
-                        )
-                    }
-                }
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        pageCount = { tabTitles.size }
+    )
 
-                Spacer(modifier = Modifier.height(10.dp))
+    val coroutineScope = rememberCoroutineScope()
 
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.wrapContentSize()
-                ) { page ->
-                    when (page) {
-                        0 -> TvShowButton(attribute = attribute)
-                        1 -> TvShowExpandableText(text = attribute.description.toString())
-                        2 -> EpisodesRow(
-                            imageUrl = attribute.imageThumbnailPath,
-                            episodes = attribute.episodes ?: emptyList()
-                        )
-                    }
-                }
+    Column(
+        modifier = Modifier.padding(10.dp),
+        verticalArrangement = Arrangement.Top
+    ) {
+        TabRow(
+            selectedTabIndex = pagerState.currentPage,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            tabTitles.forEachIndexed { index, title ->
+                Tab(
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                    text = { Text(title) }
+                )
+            }
+        }
+
+        HorizontalPager(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            state = pagerState,
+            verticalAlignment = Alignment.Top,
+            //verticalAlignment vermeyince side effect çıkıyor.Çünkü horizontal pagerin default verticalAligment değeri CenterVertically.
+            //Bundandolayı her sayfaya geçince ortalamaya çalışıyor.
+            //Sayfalar arası gezerken yukarıda boşluk oluşup düzeliyor.İçeriği bir öncekine göre ayarlıyor
+        ) { page ->
+            when (page) {
+                0 -> TvShowButton(attribute = attribute)
+                1 -> TvShowExpandableText(text = attribute.description.toString())
+                2 -> EpisodesRow(
+                    imageUrl = attribute.imageThumbnailPath,
+                    episodes = attribute.episodes ?: emptyList()
+                )
             }
         }
     }
@@ -142,28 +154,28 @@ fun DetailPageItemComposable(
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun EpisodeCard(modifier: Modifier = Modifier, imagePainter: Painter?, episode: Episode) {
-    val maxHeight = mutableStateOf(0.dp)
-    val density =LocalDensity.current
+fun EpisodeCard(
+    modifier: Modifier = Modifier,
+    imagePainter: Painter?,
+    episode: Episode,
+    onHeightMeasured: (Dp) -> Unit,
+    maxHeight: Dp,
+) {
+    val density = LocalDensity.current
 
     Card(
         modifier = modifier
             .width(150.dp)
-            .heightIn(maxHeight.value),
+            .heightIn(maxHeight)
+            .onGloballyPositioned { coordinates ->
+                val height = with(density) { coordinates.size.height.toDp() }
+                onHeightMeasured(height)
+            },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        // Can't represent a size of 425457 in Constraints . Carda onGloballyPositioned verince bu hatayı aldım.
         Column(
-            modifier = Modifier.fillMaxSize() .onGloballyPositioned {coordinates ->
-                val heightInDp = with(density) {
-                    coordinates.size.height.toDp()
-                }
-
-                if (heightInDp > maxHeight.value) {
-                    maxHeight.value = heightInDp
-                }
-            },
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -205,20 +217,74 @@ fun EpisodeCard(modifier: Modifier = Modifier, imagePainter: Painter?, episode: 
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun EpisodesRow(imageUrl: String?, episodes: List<Episode>) {
+internal fun EpisodesRow(imageUrl: String?, episodes: List<Episode>) {
     val painter: Painter = rememberAsyncImagePainter(model = imageUrl)
+    val maxHeight = mutableStateOf(0.dp)
 
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(episodes.size) { index ->
-            EpisodeCard(modifier = Modifier,
+            EpisodeCard(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp)),
                 imagePainter = painter,
                 episode = episodes[index],
+                onHeightMeasured = {
+                    if (it > maxHeight.value) {
+                        maxHeight.value = it
+                    }
+                },
+                maxHeight = maxHeight.value
             )
         }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+internal fun TvShowImagePager(
+    image: List<String>,
+    index: Int,
+    pagerState: PagerState
+) {
+    val pageOffset = ((pagerState.currentPage - index) + pagerState.currentPageOffsetFraction)
+
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier
+            .padding(2.dp)
+            .graphicsLayer {
+                lerp(
+                    start = 0.70f,
+                    stop = 1f,
+                    fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
+                ).also { scale ->
+                    scaleX = scale.absoluteValue
+                    scaleY = scale.absoluteValue
+                }
+                alpha = lerp(
+                    start = 0.5f,
+                    stop = 1f,
+                    fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
+                ).absoluteValue
+            },
+
+        ) {
+        AsyncImage(
+            modifier = Modifier.fillMaxSize(),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(image[index])
+                .crossfade(true)
+                .scale(Scale.FILL)
+                .build(),
+            error = painterResource(id = R.drawable.notfoundimage),
+            contentDescription = "Picture",
+            contentScale = ContentScale.Crop,
+        )
     }
 }
 
@@ -269,6 +335,7 @@ internal fun TvShowImageList(pictureList: List<String>? = null) {
                                 .padding(5.dp)
                                 .clip(CircleShape)
                                 .background(color)
+
                         )
                     }
                 }
@@ -335,50 +402,6 @@ internal fun TvShowDescription(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-internal fun TvShowImagePager(
-    image: List<String>,
-    index: Int,
-    pagerState: PagerState
-) {
-    val pageOffset = ((pagerState.currentPage - index) + pagerState.currentPageOffsetFraction)
-
-    Card(
-        shape = RoundedCornerShape(10.dp),
-        modifier = Modifier
-            .padding(2.dp)
-            .graphicsLayer {
-                lerp(
-                    start = 0.70f,
-                    stop = 1f,
-                    fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
-                ).also { scale ->
-                    scaleX = scale.absoluteValue
-                    scaleY = scale.absoluteValue
-                }
-                alpha = lerp(
-                    start = 0.5f,
-                    stop = 1f,
-                    fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
-                ).absoluteValue
-            },
-
-        ) {
-        AsyncImage(
-            modifier = Modifier.fillMaxSize(),
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(image[index])
-                .crossfade(true)
-                .scale(Scale.FILL)
-                .build(),
-            error = painterResource(id = R.drawable.notfoundimage),
-            contentDescription = "Picture",
-            contentScale = ContentScale.Crop,
-        )
-    }
-}
-
 @Composable
 internal fun TvShowButton(
     attribute: TvShow,
@@ -441,10 +464,11 @@ internal fun TvShowExpandableText(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
             .animateContentSize()
+            .heightIn(min = 50.dp)
     ) {
         Text(
+            modifier = Modifier.wrapContentSize(),
             text = text,
             maxLines = if (isExpanded) Int.MAX_VALUE else minimizedMaxLines,
             overflow = TextOverflow.Ellipsis,
