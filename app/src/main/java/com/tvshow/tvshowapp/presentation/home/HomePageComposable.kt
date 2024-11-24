@@ -70,19 +70,6 @@ fun HomePageComposable(
 
         lazyPagingItems.apply {
             when {
-                loadState.refresh is LoadState.Loading -> {
-
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            TvShowLoadingComposable()
-                        }
-                    }
-                }
-
                 loadState.append is LoadState.Error -> {
                     val errorMessage = (loadState.append as LoadState.Error).error.localizedMessage ?: "Failed to load more items"
                     item {
@@ -97,6 +84,19 @@ fun HomePageComposable(
                                 modifier = Modifier
                                     .padding(16.dp)
                             )
+                        }
+                    }
+                }
+
+                loadState.refresh is LoadState.Loading -> {
+
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            TvShowLoadingComposable()
                         }
                     }
                 }
