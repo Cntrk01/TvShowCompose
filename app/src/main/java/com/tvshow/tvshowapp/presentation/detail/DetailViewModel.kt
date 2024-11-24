@@ -25,7 +25,7 @@ class DetailViewModel @Inject constructor(
     val tvShow: LiveData<DetailPageState> = _tvShow
 
     init {
-        savedStateHandle.get<Any>(key = "id")?.let { tvShow ->
+        savedStateHandle.get<Any>(key = "detailId")?.let { tvShow ->
             println(tvShow)
             getTvShow(showId = tvShow)
         }

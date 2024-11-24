@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
 
-                                Route.Detail.route-> {
+                                Route.Detail.route + "/{detailId}"-> {
                                     TopBarComposable(
                                         tvShowHeaderType = TvShowHeaderType.MULTI,
                                         headerTitle = "Tv Show Detail",

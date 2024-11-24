@@ -33,15 +33,15 @@ fun NavGraph(
                     //Ekran döndme,activity,fragment sonlanma durumlarında veriyi tutmaya devam eder.
                     //!Veri tutarken boyutunu dikkate almalıyız çünkü büyük verilerle işlem yapıyorsak bize performans sorunlarına sebebiyet verebilir
                     navController.currentBackStackEntry?.savedStateHandle?.set(
-                        key = Route.Detail.route,
+                        key = "detailId",
                         value = linkOrId
                     )
-                    navController.navigate(route = Route.Detail.route)
+                    navController.navigate(route = Route.Detail.route + "/$linkOrId")
                 }
             )
         }
 
-        composable(route = Route.Detail.route,
+        composable(route = Route.Detail.route + "/{detailId}",
             enterTransition = {
                 slideInHorizontally (
                     initialOffsetX = {-it},

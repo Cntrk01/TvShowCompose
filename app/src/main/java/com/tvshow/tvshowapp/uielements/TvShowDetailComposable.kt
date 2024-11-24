@@ -76,6 +76,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -585,6 +586,7 @@ internal fun TvShowExpandableText(
                 it.textSize = 16f
                 it.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
                 it.typeface = Typeface.DEFAULT //Fontu buradan değişebiliriz.
+                it.setTextColor(ContextCompat.getColor(it.context, R.color.detailDescriptionTextColor))
             },
         )
 

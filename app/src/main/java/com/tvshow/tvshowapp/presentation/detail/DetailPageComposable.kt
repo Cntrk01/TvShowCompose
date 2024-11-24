@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tvshow.tvshowapp.uielements.TvShowDetailComposable
 import com.tvshow.tvshowapp.uielements.TvShowLoadingComposable
@@ -34,7 +35,16 @@ fun DetailPageComposable(
                 }
             }
             detailItem?.error?.isNotEmpty() == true -> {
-                Text(text = "Error: ${detailItem?.error}")
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Error: ${detailItem?.error}",
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
             detailItem?.tvShow != null -> {
                 TvShowDetailComposable(attribute = detailItem?.tvShow!!)
