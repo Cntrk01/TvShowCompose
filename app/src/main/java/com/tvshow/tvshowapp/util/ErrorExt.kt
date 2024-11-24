@@ -13,7 +13,7 @@ import java.io.IOException
 //Genelde alacağım hatalar üzerinde çalışma yaparak tanımlama yaptım.Bilmediğim durum varsa CustomError tanımladım.
 sealed class UIError : Exception(){
 
-    internal data class HttpError(val code: Int, override val message: String) : UIError()
+    private data class HttpError(val code: Int, override val message: String) : UIError()
     private data class NetworkError(override val message: String) : UIError()
     private data class ParsingError(override val message: String) : UIError()
     private data class TimeoutError(override val message: String) : UIError()
@@ -22,7 +22,7 @@ sealed class UIError : Exception(){
     companion object {
         operator fun invoke(throwable: Throwable): UIError {
             return when (throwable) {
-                is IOException -> NetworkError(throwable.message ?: "")
+                is IOException -> NetworkError("Check Your Internet Connection !")
 
                 is HttpException -> {
                     when (throwable.code()) {
@@ -50,10 +50,14 @@ sealed class UIError : Exception(){
 
         operator fun invoke(code: Int = 0, message: String = "", throwable: Throwable? = null) : UIError{
             return when (throwable) {
-                is IOException -> NetworkError(throwable.message ?: "")
+                is IOException -> NetworkError("Check Your Internet Connection !")
 
                 is HttpException -> {
-                    HttpError(throwable.code(), throwable.message ?: "HTTP Exception")
+                    when (throwable.code()) {
+                        404 ->  HttpError(throwable.code(), "Page Not Found...404 Error")
+                        500 -> HttpError(throwable.code(), "Server error. Please try again later.")
+                        else ->  HttpError(throwable.code(), "An unknown HTTP error")
+                    }
                 }
 
                 is JsonParseException -> {
@@ -67,11 +71,5 @@ sealed class UIError : Exception(){
                 else -> CustomError(throwable?.message ?: "UnknownError.")
             }
         }
-    }
-}
-
-fun UIError.onHttpError(callback: (String, Int) -> Unit): UIError = apply {
-    if (this is UIError.HttpError) {
-        callback(message, code)
     }
 }

@@ -17,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +27,7 @@ import com.tvshow.myapplication.R
 @Composable
 fun TopBarComposable(
     modifier: Modifier = Modifier,
-    headerType: HeaderType = HeaderType.SIMPLE,
+    tvShowHeaderType: TvShowHeaderType = TvShowHeaderType.SIMPLE,
     backClick: () -> Unit = {},
     headerTitle: String = "",
 ) {
@@ -41,7 +40,7 @@ fun TopBarComposable(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (headerType == HeaderType.MULTI) {
+        if (tvShowHeaderType == TvShowHeaderType.MULTI) {
             Icon(
                 modifier = Modifier
                     .clickable(indication = null, interactionSource = interactionSource) {

@@ -18,11 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.tvshow.tvshowapp.uielements.HomePageItemComposable
-import com.tvshow.tvshowapp.uielements.LoadingComposable
+import com.tvshow.tvshowapp.uielements.TvShowHomeComposable
+import com.tvshow.tvshowapp.uielements.TvShowLoadingComposable
 
 @Composable
 fun HomePageComposable(
@@ -40,7 +39,7 @@ fun HomePageComposable(
         items(lazyPagingItems.itemCount) { tvShow ->
             lazyPagingItems[tvShow]?.let { item ->
 
-                HomePageItemComposable(
+                TvShowHomeComposable(
                     modifier = Modifier.clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(color = Color.LightGray),
@@ -72,20 +71,20 @@ fun HomePageComposable(
         lazyPagingItems.apply {
             when {
                 loadState.refresh is LoadState.Loading -> {
+
                     item {
                         Box(
                             modifier = Modifier
                                 .fillParentMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            LoadingComposable()
+                            TvShowLoadingComposable()
                         }
                     }
                 }
 
                 loadState.append is LoadState.Error -> {
                     val errorMessage = (loadState.append as LoadState.Error).error.localizedMessage ?: "Failed to load more items"
-
                     item {
                         Box(
                             modifier = Modifier

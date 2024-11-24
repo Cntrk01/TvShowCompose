@@ -32,7 +32,7 @@ import coil.request.ImageRequest
 import com.tvshow.myapplication.R
 
 @Composable
-fun HomePageItemComposable(
+fun TvShowHomeComposable(
     modifier: Modifier = Modifier,
     name: String,
     network: String,
@@ -133,7 +133,7 @@ fun HomePageItemComposable(
 @Preview
 @Composable
 fun HomePageItemPreviewComposable() {
-    HomePageItemComposable(
+    TvShowHomeComposable(
         name = "Title",
         network = "Network",
         country = "2023-01-01",

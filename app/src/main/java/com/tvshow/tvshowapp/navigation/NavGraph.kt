@@ -1,5 +1,14 @@
 package com.tvshow.tvshowapp.navigation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,7 +27,7 @@ fun NavGraph(
     ) {
         composable(route = Route.Home.route) {
             HomePageComposable(
-                onItemClicked = { linkOrId->
+                onItemClicked = { linkOrId ->
                     //Saved State Handle key-value(anahtar-değer) depolama mekanizması olarak işlev görür.
                     //Architecture Components ViewModel kütüphanesinde tanıtılan bir sınıftır
                     //Ekran döndme,activity,fragment sonlanma durumlarında veriyi tutmaya devam eder.
@@ -27,12 +36,31 @@ fun NavGraph(
                         key = Route.Detail.route,
                         value = linkOrId
                     )
-                    navController.navigate(route = Route.Detail.route + "/$linkOrId")
+                    navController.navigate(route = Route.Detail.route)
                 }
             )
         }
 
-        composable(route = Route.Detail.route + "/{id}") {
+        composable(route = Route.Detail.route,
+            enterTransition = {
+                slideInHorizontally (
+                    initialOffsetX = {-it},
+                    animationSpec = tween(
+                        200,
+                        easing = FastOutLinearInEasing
+                    )
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(
+                        200,
+                        easing = FastOutLinearInEasing
+                    )
+                )
+            }
+        ) {
             DetailPageComposable()
         }
     }

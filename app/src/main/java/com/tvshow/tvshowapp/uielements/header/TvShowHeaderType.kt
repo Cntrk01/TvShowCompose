@@ -1,5 +1,5 @@
 package com.tvshow.tvshowapp.uielements.header
 
-enum class HeaderType {
+enum class TvShowHeaderType {
     SIMPLE,MULTI
 }

@@ -9,11 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import com.tvshow.tvshowapp.uielements.DetailPageItemComposable
-import com.tvshow.tvshowapp.uielements.LoadingComposable
+import com.tvshow.tvshowapp.uielements.TvShowDetailComposable
+import com.tvshow.tvshowapp.uielements.TvShowLoadingComposable
 
 @Composable
 fun DetailPageComposable(
@@ -32,14 +30,14 @@ fun DetailPageComposable(
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    LoadingComposable()
+                    TvShowLoadingComposable()
                 }
             }
             detailItem?.error?.isNotEmpty() == true -> {
                 Text(text = "Error: ${detailItem?.error}")
             }
             detailItem?.tvShow != null -> {
-                DetailPageItemComposable(attribute = detailItem?.tvShow!!)
+                TvShowDetailComposable(attribute = detailItem?.tvShow!!)
             }
             else -> {
                 Text(text = "No data received.")
