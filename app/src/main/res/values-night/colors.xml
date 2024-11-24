@@ -10,6 +10,7 @@
     <color name="showPlatform">#7C5FB1</color>
     <color name="showCountry">#D04F45</color>
 
+    <color name="detailDescriptionTextColor">#E6FFFFFF</color>
     <color name="detailButtonColor">#E6FFFFFF</color>
     <color name="websiteButton">#4E4E4E</color>
     <color name="sourceButton">#1C2DC8</color>

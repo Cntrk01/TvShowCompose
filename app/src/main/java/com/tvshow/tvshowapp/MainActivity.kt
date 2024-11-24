@@ -10,26 +10,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.tvshow.myapplication.R
 import com.tvshow.tvshowapp.navigation.NavGraph
 import com.tvshow.tvshowapp.navigation.Route
-import com.tvshow.tvshowapp.presentation.home.HomePageComposable
 import com.tvshow.tvshowapp.ui.theme.TvShowComposeTheme
-import com.tvshow.tvshowapp.uielements.header.HeaderType
+import com.tvshow.tvshowapp.uielements.header.TvShowHeaderType
 import com.tvshow.tvshowapp.uielements.header.TopBarComposable
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,14 +48,14 @@ class MainActivity : ComponentActivity() {
                             when (navController.currentBackStackEntryAsState().value?.destination?.route) {
                                 Route.Home.route -> {
                                     TopBarComposable(
-                                        headerType = HeaderType.SIMPLE,
+                                        tvShowHeaderType = TvShowHeaderType.SIMPLE,
                                         headerTitle = "Tv Shows"
                                     )
                                 }
 
-                                Route.Detail.route + "/{id}"-> {
+                                Route.Detail.route + "/{detailId}"-> {
                                     TopBarComposable(
-                                        headerType = HeaderType.MULTI,
+                                        tvShowHeaderType = TvShowHeaderType.MULTI,
                                         headerTitle = "Tv Show Detail",
                                         backClick = {
                                             navController.popBackStack()

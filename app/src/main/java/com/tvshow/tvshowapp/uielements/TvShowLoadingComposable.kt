@@ -20,7 +20,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.tvshow.myapplication.R
 
 @Composable
-fun LoadingComposable(
+fun TvShowLoadingComposable(
     modifier: Modifier = Modifier,
 ) {
     Box(

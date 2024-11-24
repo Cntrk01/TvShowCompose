@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.tvshow.tvshowapp.data.mapper.TvShowHomePage
 import com.tvshow.tvshowapp.domain.usecase.GetMostPopularTvShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
