@@ -21,6 +21,7 @@ fun DetailPageComposable(
 ){
     val detailItem by viewModel.tvShow.observeAsState()
 
+
     Column(
         modifier = modifier
     ) {
