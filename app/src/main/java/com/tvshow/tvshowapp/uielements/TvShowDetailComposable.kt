@@ -111,7 +111,6 @@ fun TvShowDetailComposable(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun TvShowInformation(
     attribute: TvShow
@@ -196,7 +195,7 @@ fun TvShowEpisodeCard(
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
@@ -264,7 +263,6 @@ internal fun EpisodesRow(imageUrl: String?, episodes: List<Episode>) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun TvShowImagePager(
     image: List<String>,
@@ -308,7 +306,6 @@ internal fun TvShowImagePager(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun TvShowImageList(pictureList: List<String>? = null) {
     val pagerState = rememberPagerState(
@@ -530,7 +527,6 @@ internal fun WebViewScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            // WebView
             AndroidView(
                 modifier = Modifier.fillMaxSize(),
                 factory = { context ->
