@@ -1,13 +1,8 @@
 package com.tvshow.tvshowapp.navigation
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -36,12 +31,12 @@ fun NavGraph(
                         key = "detailId",
                         value = linkOrId
                     )
-                    navController.navigate(route = Route.Detail.route + "/$linkOrId")
+                    navController.navigate(route = Route.Detail.createRoute(linkOrId))
                 }
             )
         }
 
-        composable(route = Route.Detail.route + "/{detailId}",
+        composable(route = Route.Detail.route,
             enterTransition = {
                 slideInHorizontally (
                     initialOffsetX = {-it},

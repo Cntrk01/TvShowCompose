@@ -16,15 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.tvshow.myapplication.R
 import com.tvshow.tvshowapp.navigation.NavGraph
 import com.tvshow.tvshowapp.navigation.Route
 import com.tvshow.tvshowapp.ui.theme.TvShowComposeTheme
-import com.tvshow.tvshowapp.uielements.header.TvShowHeaderType
-import com.tvshow.tvshowapp.uielements.header.TopBarComposable
+import com.tvshow.tvshowapp.uielements.header.TvShowTopBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -45,24 +43,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         topBar = {
-                            when (navController.currentBackStackEntryAsState().value?.destination?.route) {
-                                Route.Home.route -> {
-                                    TopBarComposable(
-                                        tvShowHeaderType = TvShowHeaderType.SIMPLE,
-                                        headerTitle = "Tv Shows"
-                                    )
-                                }
-
-                                Route.Detail.route + "/{detailId}"-> {
-                                    TopBarComposable(
-                                        tvShowHeaderType = TvShowHeaderType.MULTI,
-                                        headerTitle = "Tv Show Detail",
-                                        backClick = {
-                                            navController.popBackStack()
-                                        }
-                                    )
-                                }
-                            }
+                            TvShowTopBar(navController = navController)
                         }
                     ) { paddingValues ->
                         Column (

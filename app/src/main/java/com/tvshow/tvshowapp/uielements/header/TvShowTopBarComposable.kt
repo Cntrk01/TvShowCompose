@@ -32,6 +32,7 @@ fun TopBarComposable(
     headerTitle: String = "",
 ) {
     val interactionSource by remember { mutableStateOf(MutableInteractionSource()) }
+
     Row(
         modifier = modifier
             .fillMaxWidth()

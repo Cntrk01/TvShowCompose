@@ -11,6 +11,8 @@ import com.tvshow.tvshowapp.domain.model.detail.TvShowDetail
 import com.tvshow.tvshowapp.domain.repository.TvShowRepository
 import com.tvshow.tvshowapp.util.Response
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 
 class TvShowRepositoryImpl(
     private val tvShowService: TvShowService
@@ -22,8 +24,8 @@ class TvShowRepositoryImpl(
         ).flow
     }
 
-    override suspend fun getTvShowDetails(permaLink: String): LiveData<Response<TvShowDetail>> {
-        return liveData {
+    override suspend fun getTvShowDetails(permaLink: String): Flow<Response<TvShowDetail>> {
+        return flow {
             emit(Response.Loading())
             try {
                 val response = tvShowService.getTvShowDetails(permaLink)
@@ -34,8 +36,8 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun getTvShowDetailsById(id: Int): LiveData<Response<TvShowDetail>> {
-        return liveData {
+    override suspend fun getTvShowDetailsById(id: Int): Flow<Response<TvShowDetail>> {
+        return flow {
             emit(Response.Loading())
             try {
                 val response = tvShowService.getTvShowDetailsById(id)
