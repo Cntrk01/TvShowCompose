@@ -1,7 +1,5 @@
 package com.tvshow.tvshowapp.presentation.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +26,7 @@ class DetailViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Any>(key = "detailId")?.let { tvShow ->
+            println(tvShow)
             getTvShow(showId = tvShow)
         }
     }
@@ -91,5 +89,4 @@ class DetailViewModel @Inject constructor(
             }
         }
     }
-
 }
