@@ -26,7 +26,6 @@ class DetailViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Any>(key = "detailId")?.let { tvShow ->
-            println(tvShow)
             getTvShow(showId = tvShow)
         }
     }
@@ -58,16 +57,16 @@ class DetailViewModel @Inject constructor(
             when (responseValue) {
                 is Response.Loading ->
                     _tvShow.value = _tvShow.value.copy(
-                    loading = true,
-                    error = "",
-                    tvShow = null
+                        loading = true,
+                        error = "",
+                        tvShow = null
                 )
 
                 is Response.Error ->
                     _tvShow.value =_tvShow.value.copy(
-                    loading = false,
-                    error = responseValue.message ?: "Unknown error",
-                    tvShow = null
+                        loading = false,
+                        error = responseValue.message ?: "Unknown error",
+                        tvShow = null
                 )
 
                 is Response.Success -> {
