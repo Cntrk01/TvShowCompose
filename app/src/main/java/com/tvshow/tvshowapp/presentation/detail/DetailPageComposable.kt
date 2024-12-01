@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tvshow.tvshowapp.navigation.Route
 import com.tvshow.tvshowapp.uielements.TvShowDetailComposable
 import com.tvshow.tvshowapp.uielements.TvShowLoadingComposable
 
@@ -48,6 +49,8 @@ fun DetailPageComposable(
             }
 
             detailItem.tvShow != null -> {
+                Route.Detail.updateTitle(newTitle = detailItem.tvShow?.name ?: "")
+
                 TvShowDetailComposable(attribute = detailItem.tvShow!!)
             }
         }

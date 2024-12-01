@@ -9,16 +9,17 @@ import com.tvshow.tvshowapp.navigation.Route
 fun TvShowTopBar(
     navController: NavController,
 ){
-   val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-   //Burda biz currentRoutedan gelen routu kontrol ediyoruz.startsWith, bir string'in başka bir string ile başlayıp başlamadığını kontrol ediyorum
-   val topBarConfig = Route.allRoutes.find { currentRoute?.startsWith(it.route) == true }?.topBarConfig
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    //Burda biz currentRoutedan gelen routu kontrol ediyoruz.startsWith, bir string'in başka bir string ile başlayıp başlamadığını kontrol ediyorum
+    val matchedRoute = Route.allRoutes.find { currentRoute?.startsWith(it.route) == true }
 
-   topBarConfig?.let { config ->
+    matchedRoute?.let { config ->
        TopBarComposable(
-           tvShowHeaderType = config.headerType,
-           headerTitle = config.title,
+           tvShowHeaderType = config.topBarConfig?.headerType ?: TvShowHeaderType.SIMPLE,
+           headerTitle = config.getTitle(),
            backClick =  {
                navController.popBackStack()
+               Route.Detail.updateTitle(newTitle = "")
            }
        )
    }
