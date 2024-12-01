@@ -33,7 +33,7 @@ sealed class Route(
         route = "detail/{detailId}",
         topBarConfig = TopBarConfig(
             headerType = TvShowHeaderType.MULTI,
-            title = "Tv Show Detail",
+            title = "Loading...",
         )
     ){
         private var dynamicTitle = mutableStateOf("")
