@@ -24,7 +24,6 @@ class TvShowPagingSource(
             )
         } catch (exception: Exception) {
             val error =UIError(exception)
-
             LoadResult.Error(error)
         }
     }

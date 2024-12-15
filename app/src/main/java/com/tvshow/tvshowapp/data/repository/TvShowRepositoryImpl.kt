@@ -1,7 +1,5 @@
 package com.tvshow.tvshowapp.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -10,8 +8,8 @@ import com.tvshow.tvshowapp.domain.model.TvShow
 import com.tvshow.tvshowapp.domain.model.detail.TvShowDetail
 import com.tvshow.tvshowapp.domain.repository.TvShowRepository
 import com.tvshow.tvshowapp.util.Response
+import com.tvshow.tvshowapp.util.UIError
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 
 class TvShowRepositoryImpl(
@@ -31,7 +29,7 @@ class TvShowRepositoryImpl(
                 val response = tvShowService.getTvShowDetails(permaLink)
                 emit(Response.Success(response))
             } catch (e: Exception) {
-                emit(Response.Error(e.message.toString(), e.cause))
+                emit(Response.Error(UIError(e)))
             }
         }
     }
@@ -43,7 +41,7 @@ class TvShowRepositoryImpl(
                 val response = tvShowService.getTvShowDetailsById(id)
                 emit(Response.Success(response))
             } catch (e: Exception) {
-                emit(Response.Error(e.message.toString(), e.cause))
+                emit(Response.Error(UIError(e)))
             }
         }
     }

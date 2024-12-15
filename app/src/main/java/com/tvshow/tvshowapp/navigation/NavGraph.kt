@@ -23,6 +23,11 @@ fun NavGraph(
         composable(route = Route.Home.route) {
             HomePageComposable(
                 onItemClicked = { linkOrId ->
+                    //currentBackStackEntry  Şu anda aktif olan ekranın verilerine erişmek için kullanılır.
+                    //Örneğin, dinamik rota parametreleri veya SavedStateHandle'daki mevcut verileri almak için kullanabiliriz.
+                    //val currentEntry = navController.currentBackStackEntry
+                    //val detailId = currentEntry?.savedStateHandle?.get<String>("detailId")
+
                     //Saved State Handle key-value(anahtar-değer) depolama mekanizması olarak işlev görür.
                     //Architecture Components ViewModel kütüphanesinde tanıtılan bir sınıftır
                     //Ekran döndme,activity,fragment sonlanma durumlarında veriyi tutmaya devam eder.
@@ -31,7 +36,18 @@ fun NavGraph(
                         key = "detailId",
                         value = linkOrId
                     )
-                    navController.navigate(route = Route.Detail.createRoute(linkOrId))
+
+                    //previousBackStackEntry Kullanımı
+                    //Aktif ekrandan bir önceki ekrana ait verileri almak için kullanılır.
+                    //Örneğin, bir önceki ekrandan bir veri aktarıldıysa ve bu veri hala savedStateHandle'da bulunuyorsa kullanabiliriz
+                    //val previousEntry = navController.previousBackStackEntry
+                    //val previousData = previousEntry?.savedStateHandle?.get<String>("key")
+
+                    // Burada dinamik rota parametrelerine dayanır.(navControllerin savedStatesinde buna ihtiyaç yok.Doğrudan key value ile gönderilir.Composable içerisinde  navController.previousBackStackEntry?.savedStateHandle?.get<>() diyerek alırız.)
+                    // Eğer rota parametresi (detail/{detailId}) tanımlamazsan,
+                    // Jetpack Navigation bu parametreyi ViewModel'in SavedStateHandle'ına aktaramaz.
+                    // Bundan ötürü createRoute methodunu yazdım
+                    navController.navigate(route = Route.Detail.createRoute(detailId = linkOrId)) //örneğin route burda detail/123 oluyor.Viewmodelde de 123 değerini alıyorum.
                 }
             )
         }
@@ -41,7 +57,7 @@ fun NavGraph(
                 slideInHorizontally (
                     initialOffsetX = {-it},
                     animationSpec = tween(
-                        200,
+                        500,
                         easing = FastOutLinearInEasing
                     )
                 )
@@ -50,7 +66,7 @@ fun NavGraph(
                 slideOutHorizontally(
                     targetOffsetX = { -it },
                     animationSpec = tween(
-                        200,
+                        500,
                         easing = FastOutLinearInEasing
                     )
                 )
