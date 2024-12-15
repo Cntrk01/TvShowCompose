@@ -7,7 +7,6 @@ import android.view.View
 import android.webkit.WebView
 import android.widget.TextView
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -79,6 +78,7 @@ import androidx.compose.ui.zIndex
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Scale
@@ -87,7 +87,7 @@ import com.tvshow.tvshowapp.domain.model.detail.Episode
 import com.tvshow.tvshowapp.domain.model.detail.TvShow
 import com.tvshow.tvshowapp.domain.model.detail.TvShowDescription
 import com.tvshow.tvshowapp.domain.model.detail.toTvShowDescription
-import com.tvshow.tvshowapp.uielements.UiElementsExt.getColorFromResource
+import com.tvshow.tvshowapp.uielements.Extensions.getColorFromResource
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
@@ -175,12 +175,13 @@ internal fun TvShowInformation(
 @Composable
 fun TvShowEpisodeCard(
     modifier: Modifier = Modifier,
-    imagePainter: Painter?,
+    imagePainter: AsyncImagePainter?,
     episode: Episode,
     onHeightMeasured: (Dp) -> Unit,
     maxHeight: Dp,
 ) {
     val density = LocalDensity.current
+    val painterState = imagePainter?.state
 
     Card(
         modifier = modifier
@@ -198,14 +199,38 @@ fun TvShowEpisodeCard(
             horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Image(
-                painter = imagePainter ?: painterResource(id = R.drawable.notfoundimage),
-                contentDescription = "Episode Image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp),
-                contentScale = ContentScale.FillBounds
-            )
+            when (painterState) {
+                is AsyncImagePainter.State.Loading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        TvShowLoadingComposable()
+                    }
+                }
+                is AsyncImagePainter.State.Error -> {
+                    Image(
+                        painter = painterResource(id = R.drawable.notfoundimage),
+                        contentDescription = "Episode Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp),
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
+                is AsyncImagePainter.State.Success -> {
+                    Image(
+                        painter = imagePainter ?: painterResource(id = R.drawable.notfoundimage),
+                        contentDescription = "Episode Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp),
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
+                else -> {}
+            }
 
             Column(
                 modifier = Modifier.padding(8.dp),
@@ -239,7 +264,7 @@ fun TvShowEpisodeCard(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 internal fun EpisodesRow(imageUrl: String?, episodes: List<Episode>) {
-    val painter: Painter = rememberAsyncImagePainter(model = imageUrl)
+    val painter = rememberAsyncImagePainter(model = imageUrl)
     val maxHeight = mutableStateOf(0.dp)
 
     LazyRow(

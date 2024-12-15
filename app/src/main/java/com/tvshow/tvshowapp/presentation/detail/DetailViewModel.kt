@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tvshow.tvshowapp.domain.model.detail.TvShowDetail
 import com.tvshow.tvshowapp.domain.repository.TvShowRepository
+import com.tvshow.tvshowapp.navigation.Route
 import com.tvshow.tvshowapp.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,11 +24,15 @@ class DetailViewModel @Inject constructor(
 
     private val _tvShow = MutableStateFlow(DetailPageState())
     val tvShow: StateFlow<DetailPageState> get() = _tvShow
+    private var tvShowId : Any = ""
 
     init {
-        savedStateHandle.get<Any>(key = "detailId")?.let { tvShow ->
-            getTvShow(showId = tvShow)
-        }
+        tvShowId = savedStateHandle.get<Any>(key = "detailId") ?: ""
+        getTvShow(showId = tvShowId)
+    }
+
+    fun retryGetTvShow(){
+        getTvShow(showId = tvShowId)
     }
 
     private fun getTvShow(showId: Any) {
@@ -65,8 +70,9 @@ class DetailViewModel @Inject constructor(
                 is Response.Error ->
                     _tvShow.value =_tvShow.value.copy(
                         loading = false,
-                        error = responseValue.message ?: "Unknown error",
-                        tvShow = null
+                        error = responseValue.error?.message ?: "Unknown Error",
+                        tvShow = null,
+                        isShowAction = responseValue.error?.isShowAction ?: false
                 )
 
                 is Response.Success -> {
