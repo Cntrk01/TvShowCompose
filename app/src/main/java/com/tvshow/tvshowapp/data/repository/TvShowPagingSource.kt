@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.tvshow.tvshowapp.data.network.TvShowService
 import com.tvshow.tvshowapp.domain.model.TvShow
-import com.tvshow.tvshowapp.util.UIError
+import com.tvshow.tvshowapp.util.CustomExceptions
 
 class TvShowPagingSource(
     private val tvShowService: TvShowService
@@ -23,7 +23,7 @@ class TvShowPagingSource(
                 nextKey = if (response.page >= response.pages) null else page + 1
             )
         } catch (exception: Exception) {
-            val error =UIError(exception)
+            val error =CustomExceptions(exception)
             LoadResult.Error(error)
         }
     }

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException
 //enummlara benzer ama daha geniş kullanım alanı var.;
 //sealed class imp eden tüm classlar compile timda tüm impl tipi biliniyor.
 //Genelde alacağım hatalar üzerinde çalışma yaparak tanımlama yaptım.Bilmediğim durum varsa CustomError tanımladım.
-sealed class UIError(
+sealed class CustomExceptions(
     open val isShowAction : Boolean = false,
     open val exceptionCode : Int = 0,
 ) : Exception(){
@@ -19,28 +19,28 @@ sealed class UIError(
     private data class HttpError(
         override val exceptionCode: Int,
         override val message: String
-    ) : UIError(exceptionCode = exceptionCode)
+    ) : CustomExceptions(exceptionCode = exceptionCode)
 
     private data class NetworkError(
         override val message: String,
         override val isShowAction: Boolean
-    ) : UIError(isShowAction = isShowAction)
+    ) : CustomExceptions(isShowAction = isShowAction)
 
     private data class ParsingError(
         override val message: String
-    ) : UIError()
+    ) : CustomExceptions()
 
     private data class TimeoutError(
         override val message: String,
         override val isShowAction: Boolean
-    ) : UIError(isShowAction = isShowAction)
+    ) : CustomExceptions(isShowAction = isShowAction)
 
     private data class CustomError(
         override val message: String
-    ) : UIError()
+    ) : CustomExceptions()
 
     companion object {
-        operator fun invoke(throwable: Throwable): UIError {
+        operator fun invoke(throwable: Throwable): CustomExceptions {
             return when (throwable) {
                 is IOException -> NetworkError(
                     message = "Check Your Internet Connection !",
@@ -80,11 +80,11 @@ sealed class UIError(
            }
         }
 
-        operator fun invoke(code: Int, message: String) : UIError {
+        operator fun invoke(code: Int, message: String) : CustomExceptions {
             return HttpError(exceptionCode = code, message = message)
         }
 
-        operator fun invoke(code: Int = 0, message: String = "", throwable: Throwable? = null) : UIError{
+        operator fun invoke(code: Int = 0, message: String = "", throwable: Throwable? = null) : CustomExceptions{
             return when (throwable) {
                 is IOException -> NetworkError(
                     message = "Check Your Internet Connection !",

@@ -56,7 +56,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -87,7 +86,7 @@ import com.tvshow.tvshowapp.domain.model.detail.Episode
 import com.tvshow.tvshowapp.domain.model.detail.TvShow
 import com.tvshow.tvshowapp.domain.model.detail.TvShowDescription
 import com.tvshow.tvshowapp.domain.model.detail.toTvShowDescription
-import com.tvshow.tvshowapp.uielements.Extensions.getColorFromResource
+import com.tvshow.tvshowapp.util.Extensions.getColorFromResource
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 

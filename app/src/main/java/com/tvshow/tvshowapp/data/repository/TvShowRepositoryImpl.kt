@@ -8,7 +8,7 @@ import com.tvshow.tvshowapp.domain.model.TvShow
 import com.tvshow.tvshowapp.domain.model.detail.TvShowDetail
 import com.tvshow.tvshowapp.domain.repository.TvShowRepository
 import com.tvshow.tvshowapp.util.Response
-import com.tvshow.tvshowapp.util.UIError
+import com.tvshow.tvshowapp.util.CustomExceptions
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -29,7 +29,7 @@ class TvShowRepositoryImpl(
                 val response = tvShowService.getTvShowDetails(permaLink)
                 emit(Response.Success(response))
             } catch (e: Exception) {
-                emit(Response.Error(UIError(e)))
+                emit(Response.Error(CustomExceptions(e)))
             }
         }
     }
@@ -41,7 +41,7 @@ class TvShowRepositoryImpl(
                 val response = tvShowService.getTvShowDetailsById(id)
                 emit(Response.Success(response))
             } catch (e: Exception) {
-                emit(Response.Error(UIError(e)))
+                emit(Response.Error(CustomExceptions(e)))
             }
         }
     }
