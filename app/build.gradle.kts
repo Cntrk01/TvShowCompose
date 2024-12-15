@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id ("kotlin-kapt")
+    id ("com.google.dagger.hilt.android")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -59,6 +62,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.runtime.livedata)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +71,41 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Compose Navigation
+    implementation (libs.androidx.navigation.compose)
+
+    //Dagger Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
+    implementation (libs.androidx.hilt.work)
+    implementation (libs.androidx.work.runtime.ktx)
+
+    //Retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
+    //Coil
+    implementation(libs.coil.compose.v240)
+
+    //Datastore
+    implementation (libs.androidx.datastore.preferences)
+
+    //Accompanist
+    implementation (libs.accompanist.systemuicontroller)
+
+    //Room
+    implementation (libs.androidx.room.runtime)
+    implementation (libs.androidx.room.ktx)
+    annotationProcessor (libs.androidx.room.compiler)
+    kapt (libs.androidx.room.compiler)
+    implementation(libs.lottie.compose)
+
+
+    implementation (libs.androidx.paging.runtime.ktx)
+    testImplementation (libs.androidx.paging.common.ktx)
+    implementation (libs.androidx.paging.compose)
+
+    implementation (libs.logging.interceptor)
 }

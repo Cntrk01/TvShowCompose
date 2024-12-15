@@ -1,4 +1,4 @@
-package com.tvshow.myapplication
+package com.tvshow.tvshowapp
 
 import org.junit.Test
 
