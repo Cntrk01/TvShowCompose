@@ -69,7 +69,6 @@ fun DetailPageComposable(
 
             detailItem.tvShow != null -> {
                 Route.Detail.updateTitle(newTitle = detailItem.tvShow?.name ?: "")
-
                 TvShowDetailComposable(attribute = detailItem.tvShow!!)
             }
         }

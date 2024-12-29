@@ -1,10 +1,10 @@
 package com.tvshow.tvshowapp.presentation.detail
 
-import com.tvshow.tvshowapp.domain.model.detail.TvShow
+import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
 
 data class DetailPageState(
     val loading : Boolean = true,
     val error : String = "",
-    val tvShow : TvShow? = null,
+    val tvShow : TvShowDetailAttr? = null,
     val isShowAction : Boolean = false,
 )

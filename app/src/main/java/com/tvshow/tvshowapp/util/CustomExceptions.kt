@@ -84,6 +84,10 @@ sealed class CustomExceptions(
             return HttpError(exceptionCode = code, message = message)
         }
 
+        operator fun invoke(customErrorMessage : String) : CustomExceptions{
+            return CustomError(message = customErrorMessage)
+        }
+
         operator fun invoke(code: Int = 0, message: String = "", throwable: Throwable? = null) : CustomExceptions{
             return when (throwable) {
                 is IOException -> NetworkError(

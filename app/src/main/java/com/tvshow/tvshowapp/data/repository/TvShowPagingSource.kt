@@ -3,19 +3,19 @@ package com.tvshow.tvshowapp.data.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.tvshow.tvshowapp.data.network.TvShowService
-import com.tvshow.tvshowapp.domain.model.TvShow
+import com.tvshow.tvshowapp.domain.model.response.TvShowHomeResponse
 import com.tvshow.tvshowapp.util.CustomExceptions
 
 class TvShowPagingSource(
     private val tvShowService: TvShowService
-) : PagingSource<Int, TvShow>(){
+) : PagingSource<Int, TvShowHomeResponse>(){
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int,TvShow> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShowHomeResponse> {
         val page = params.key ?: 1
 
         return try {
             val response = tvShowService.getMostPopularTvShows(page)
-            val tvShows = response.tvShows
+            val tvShows = response.tvShowHomeRespons
 
             LoadResult.Page(
                 data = tvShows,
@@ -28,7 +28,7 @@ class TvShowPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, TvShow>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, TvShowHomeResponse>): Int? {
         return state.anchorPosition?.let { position ->
             state.closestPageToPosition(position)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(position)?.nextKey?.minus(1)
