@@ -22,7 +22,7 @@ import com.tvshow.myapplication.R
 import com.tvshow.tvshowapp.navigation.NavGraph
 import com.tvshow.tvshowapp.navigation.Route
 import com.tvshow.tvshowapp.ui.theme.TvShowComposeTheme
-import com.tvshow.tvshowapp.uielements.header.TvShowTopBar
+import com.tvshow.tvshowapp.common.uielements.header.TvShowTopBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

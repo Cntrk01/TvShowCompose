@@ -1,4 +1,4 @@
-package com.tvshow.tvshowapp.util
+package com.tvshow.tvshowapp.core
 
 import com.google.gson.JsonParseException
 import kotlinx.coroutines.TimeoutCancellationException
@@ -14,11 +14,11 @@ import java.util.concurrent.TimeoutException
 sealed class CustomExceptions(
     open val isShowAction : Boolean = false,
     open val exceptionCode : Int = 0,
-) : Exception(){
+) : Exception() {
 
     private data class HttpError(
         override val exceptionCode: Int,
-        override val message: String
+        override val message: String,
     ) : CustomExceptions(exceptionCode = exceptionCode)
 
     private data class NetworkError(
@@ -80,15 +80,21 @@ sealed class CustomExceptions(
            }
         }
 
-        operator fun invoke(code: Int, message: String) : CustomExceptions {
+        operator fun invoke(
+            code: Int,
+            message: String
+        ) : CustomExceptions {
             return HttpError(exceptionCode = code, message = message)
         }
 
-        operator fun invoke(customErrorMessage : String) : CustomExceptions{
+        operator fun invoke(customErrorMessage : String) : CustomExceptions {
             return CustomError(message = customErrorMessage)
         }
 
-        operator fun invoke(code: Int = 0, message: String = "", throwable: Throwable? = null) : CustomExceptions{
+        operator fun invoke(
+            message: String = "",
+            throwable: Throwable? = null
+        ) : CustomExceptions {
             return when (throwable) {
                 is IOException -> NetworkError(
                     message = "Check Your Internet Connection !",

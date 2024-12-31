@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tvshow.tvshowapp.data.mapper.toTvShowDescription
 import com.tvshow.tvshowapp.domain.repository.TvShowRepository
 import com.tvshow.tvshowapp.domain.usecase.DetailPageUseCase
-import com.tvshow.tvshowapp.util.Response
+import com.tvshow.tvshowapp.common.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

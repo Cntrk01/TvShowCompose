@@ -1,4 +1,4 @@
-package com.tvshow.tvshowapp.uielements.header
+package com.tvshow.tvshowapp.common.uielements.header
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController

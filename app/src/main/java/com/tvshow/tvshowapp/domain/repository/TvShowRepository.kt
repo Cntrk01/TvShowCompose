@@ -3,7 +3,7 @@ package com.tvshow.tvshowapp.domain.repository
 import androidx.paging.PagingData
 import com.tvshow.tvshowapp.domain.model.response.TvShowHomeResponse
 import com.tvshow.tvshowapp.domain.model.response.TvShowDetailResponse
-import com.tvshow.tvshowapp.util.Response
+import com.tvshow.tvshowapp.common.Response
 import kotlinx.coroutines.flow.Flow
 
 interface TvShowRepository {

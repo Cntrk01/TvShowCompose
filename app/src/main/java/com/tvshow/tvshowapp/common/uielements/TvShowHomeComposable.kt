@@ -1,4 +1,4 @@
-package com.tvshow.tvshowapp.uielements
+package com.tvshow.tvshowapp.common.uielements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

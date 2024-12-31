@@ -1,4 +1,4 @@
-package com.tvshow.tvshowapp.uielements
+package com.tvshow.tvshowapp.common.uielements
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
@@ -80,9 +80,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.tvshow.myapplication.R
+import com.tvshow.tvshowapp.core.getColorFromResource
 import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
 import com.tvshow.tvshowapp.domain.model.response.Episode
-import com.tvshow.tvshowapp.util.Extensions.getColorFromResource
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
