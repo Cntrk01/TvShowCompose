@@ -21,9 +21,9 @@ class TvShowRepositoryImpl(
                 pageSize = 10, //1 sayfada olcak item sayısını temsil eder
                 prefetchDistance = 2, // Kullanıcı 2 son iteme yaklaştığında yeni veri yükle
                 enablePlaceholders = false, //Sayfalanmamış veriler için null placeholder'ların kullanılıp kullanılmayacağını belirtir.
-                initialLoadSize = 20, //İlk yüklemede 20 veri getirecek.
-                maxSize = 200, // Bellekte en fazla 200 veri tut.Burdada şöyle oluyor 201. veriye geldiği anda ilk 1-10 veriyi silecektir(pageSize değerine 10 dedim ondan 1-10).Eğer geri ilk sayafaya kadar dönersek geri yükleyecek.
-                jumpThreshold = 50,//Kullanıcı liste üzerinde çok büyük bir mesafe kaydırdığında, sayfalama sistemi eski yöntemle sayfa sayfa veri çekmek yerine, doğrudan belirtilen konumdan veri çekmek için REFRESH tetikler.
+                initialLoadSize = 10, //İlk yüklemede 20 veri getirecek.
+                maxSize = 100, // Bellekte en fazla 100 veri tut.Burdada şöyle oluyor 101. veriye geldiği anda ilk 1-10 veriyi silecektir(pageSize değerine 10 dedim ondan 1-10).Eğer geri ilk sayafaya kadar dönersek geri yükleyecek.
+                //jumpThreshold = 50,//Kullanıcı liste üzerinde çok büyük bir mesafe kaydırdığında, sayfalama sistemi eski yöntemle sayfa sayfa veri çekmek yerine, doğrudan belirtilen konumdan veri çekmek için REFRESH tetikler.
                 //Bu yaklaşım, büyük sıçramalarda daha verimli bir veri yükleme sağlar ve gereksiz ara yüklemeleri önler.
                 //Şuanda 50 öge birden zıplarsa gittiği hedefteki sayfayı yani hangi sayfaya gittiyse onu yükleyecek.
                 //jumpTresholdu çalıştırmak istiyorsan TvShowPagingSource içerisinde jumpingSupported override etmem gerekli ! bunuda true setlemeliyim

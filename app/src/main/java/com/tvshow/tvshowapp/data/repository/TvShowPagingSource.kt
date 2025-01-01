@@ -10,9 +10,6 @@ class TvShowPagingSource(
     private val tvShowService: TvShowService
 ) : PagingSource<Int, TvShowHomeResponse>(){
 
-    override val jumpingSupported: Boolean
-        get() = true
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShowHomeResponse> {
         val page = params.key ?: 1
 
@@ -35,7 +32,6 @@ class TvShowPagingSource(
         return state.anchorPosition?.let { position ->
             state.closestPageToPosition(position)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(position)?.nextKey?.minus(1)
-
         }
     }
 }

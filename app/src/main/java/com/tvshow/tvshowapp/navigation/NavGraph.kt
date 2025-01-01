@@ -47,15 +47,7 @@ fun NavGraph(
                     // Eğer rota parametresi (detail/{detailId}) tanımlamazsan,
                     // Jetpack Navigation bu parametreyi ViewModel'in SavedStateHandle'ına aktaramaz.
                     // Bundan ötürü createRoute methodunu yazdım
-                    navController.navigate(route = Route.Detail.createRoute(detailId = linkOrId)) { ////örneğin route burda detail/123 oluyor.Viewmodelde de 123 değerini alıyorum.
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
-                            }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate(route = Route.Detail.createRoute(detailId = linkOrId)) ////örneğin route burda detail/123 oluyor.Viewmodelde de 123 değerini alıyorum.
                 }
             )
         }
