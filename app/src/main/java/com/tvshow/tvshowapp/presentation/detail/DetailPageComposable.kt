@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tvshow.tvshowapp.common.uielements.TvShowDetailComposable
+import com.tvshow.tvshowapp.common.uielements.TvShowLoadingComposable
 import com.tvshow.tvshowapp.navigation.Route
-import com.tvshow.tvshowapp.uielements.TvShowDetailComposable
-import com.tvshow.tvshowapp.uielements.TvShowLoadingComposable
 
 @Composable
 fun DetailPageComposable(
@@ -69,7 +69,6 @@ fun DetailPageComposable(
 
             detailItem.tvShow != null -> {
                 Route.Detail.updateTitle(newTitle = detailItem.tvShow?.name ?: "")
-
                 TvShowDetailComposable(attribute = detailItem.tvShow!!)
             }
         }

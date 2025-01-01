@@ -1,8 +1,8 @@
 package com.tvshow.tvshowapp.navigation
 
 import androidx.compose.runtime.mutableStateOf
-import com.tvshow.tvshowapp.uielements.header.TopBarConfig
-import com.tvshow.tvshowapp.uielements.header.TvShowHeaderType
+import com.tvshow.tvshowapp.common.uielements.header.TopBarConfig
+import com.tvshow.tvshowapp.common.uielements.header.TvShowHeaderType
 
 sealed class Route(
     val route: String,

@@ -3,13 +3,12 @@ package com.tvshow.tvshowapp.presentation.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tvshow.tvshowapp.domain.model.detail.TvShowDetail
+import com.tvshow.tvshowapp.data.mapper.toTvShowDescription
 import com.tvshow.tvshowapp.domain.repository.TvShowRepository
-import com.tvshow.tvshowapp.navigation.Route
-import com.tvshow.tvshowapp.util.Response
+import com.tvshow.tvshowapp.domain.usecase.DetailPageUseCase
+import com.tvshow.tvshowapp.common.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -20,45 +19,25 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val tvShowService: TvShowRepository,
     private val savedStateHandle: SavedStateHandle,
+    private val detailPageUseCase: DetailPageUseCase,
 ) : ViewModel() {
 
+    //_tvShow değişkeninin durumu (StateFlow veya LiveData) doğrudan UI'ye bağlıdır, bu yüzden ViewModel'de kalmalıdır.
     private val _tvShow = MutableStateFlow(DetailPageState())
     val tvShow: StateFlow<DetailPageState> get() = _tvShow
     private var tvShowId : Any = ""
 
     init {
         tvShowId = savedStateHandle.get<Any>(key = "detailId") ?: ""
-        getTvShow(showId = tvShowId)
+        handleTvShowResponse()
     }
 
-    fun retryGetTvShow(){
-        getTvShow(showId = tvShowId)
+    fun retryGetTvShow() = viewModelScope.launch(Dispatchers.IO){
+        handleTvShowResponse()
     }
 
-    private fun getTvShow(showId: Any) {
-        when (showId) {
-            is String -> {
-                getTvShowDetailString(name = showId)
-            }
-
-            is Int -> {
-                getTvShowDetailId(id = showId)
-            }
-        }
-    }
-
-    private fun getTvShowDetailId(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-        val getDetailId = tvShowService.getTvShowDetailsById(id = id)
-        handleTvShowResponse(getDetailId)
-    }
-
-    private fun getTvShowDetailString(name: String) = viewModelScope.launch(Dispatchers.IO) {
-        val getShowLink = tvShowService.getTvShowDetails(permaLink = name)
-        handleTvShowResponse(getShowLink)
-    }
-
-    private suspend fun handleTvShowResponse(response: Flow<Response<TvShowDetail>>) {
-        response.collectLatest { responseValue ->
+    private fun handleTvShowResponse() = viewModelScope.launch(Dispatchers.IO){
+        detailPageUseCase(showId = tvShowId).collectLatest { responseValue ->
             when (responseValue) {
                 is Response.Loading ->
                     _tvShow.value = _tvShow.value.copy(
@@ -76,12 +55,12 @@ class DetailViewModel @Inject constructor(
                 )
 
                 is Response.Success -> {
-                    val tvShowData = responseValue.data?.tvShow
+                    val tvShowData = responseValue.data
                     if (tvShowData != null) {
                         _tvShow.value =_tvShow.value.copy(
                             loading = false,
                             error = "",
-                            tvShow = tvShowData
+                            tvShow = tvShowData.tvShow.toTvShowDescription()
                         )
                     } else {
                         _tvShow.value = _tvShow.value.copy(

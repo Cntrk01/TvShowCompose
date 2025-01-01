@@ -1,47 +1,10 @@
-package com.tvshow.tvshowapp.domain.model.detail
+package com.tvshow.tvshowapp.data.mapper
 
-import com.google.gson.annotations.SerializedName
+import com.tvshow.tvshowapp.domain.model.response.TvShowHomeResponse
+import com.tvshow.tvshowapp.domain.model.response.TvShowDetail
+import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
+import com.tvshow.tvshowapp.domain.model.attr.TvShowHomeAttr
 
-data class TvShow(
-    val countdown: Any?,
-    val country: String?,
-    val description: String?,
-    @SerializedName("description_source")
-    val descriptionSource: String?,
-    @SerializedName("end_date")
-    val endDate: Any?,
-    val episodes: List<Episode>?,
-    val genres: List<String>?,
-    val id: Int?,
-    @SerializedName("image_path")
-    val imagePath: String?,
-    @SerializedName("image_thumbnail_path")
-    val imageThumbnailPath: String?,
-    val name: String?,
-    val network: String?,
-    val permalink: String?,
-    val pictures: List<String>?,
-    val rating: String?,
-    @SerializedName("rating_count")
-    val ratingCount: String?,
-    val runtime: Int?,
-    @SerializedName("start_date")
-    val startDate: String?,
-    val status: String?,
-    val url: String?,
-    @SerializedName("youtube_link")
-    val youtubeLink: String?
-)
-data class TvShowDescription(
-    val name : String?,
-    val status : String?,
-    val startDate : String?,
-    val endDate : Any?,
-    val rating : String?,
-    val network : String?,
-    val description : String?,
-    val imageThumbnailPath: String?,
-)
 //Avantajları
 //TvShowDescription yalnızca gereken alanları içerdiği için, bu yapıyı kullanan diğer bileşenler (ör. UI katmanı) gereksiz verilere erişmeye çalışmaz. Bu, sınıfın sorumluluğunu daraltır.
 //TvShow sınıfına yeni alanlar eklenirse, bu değişiklik TvShowDescription ve onu kullanan bileşenleri etkilemez. Bu, kodun bakımını kolaylaştırır.
@@ -55,8 +18,21 @@ data class TvShowDescription(
 //TvShow'dan TvShowDescription gibi bir sınıfa dönüşüm işlemi küçük bir maliyet yaratabilir. Ancak bu genelde ihmal edilebilir düzeydedir.
 //Fazladan Kod:
 //Yeni bir sınıf ve dönüşüm fonksiyonu yazmak kodu artırır. Ancak, bu genelde daha iyi yapılandırılmış ve sürdürülebilir bir kod tabanı sağlar.
-fun TvShow.toTvShowDescription(): TvShowDescription {
-    return TvShowDescription(
+
+fun TvShowHomeResponse.toShowMapper(): TvShowHomeAttr {
+    return TvShowHomeAttr(
+        permaLink = permalink ?: "",
+        id = id ?: 0,
+        name = name ?: "",
+        imageThumbnailPath = imageThumbnailPath ?: "",
+        country = country ?: "",
+        network = network ?: "",
+        status = status ?: ""
+    )
+}
+
+fun TvShowDetail.toTvShowDescription(): TvShowDetailAttr {
+    return TvShowDetailAttr(
         name = name,
         status = status,
         startDate = startDate,
@@ -64,6 +40,11 @@ fun TvShow.toTvShowDescription(): TvShowDescription {
         rating = rating,
         network = network,
         description = description,
-        imageThumbnailPath = imageThumbnailPath
+        imageThumbnailPath = imageThumbnailPath,
+        imageList = pictures,
+        url= url,
+        descriptionSource = descriptionSource,
+        youtubeLink = youtubeLink,
+        episodes = episodes,
     )
 }

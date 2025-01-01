@@ -1,8 +1,8 @@
-package com.tvshow.tvshowapp.domain.model
+package com.tvshow.tvshowapp.domain.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class TvShow(
+data class TvShowHomeResponse(
     val country: String?,
     @SerializedName("end_date")
     val endDate: Any?,

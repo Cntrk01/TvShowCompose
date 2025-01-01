@@ -1,7 +1,7 @@
 package com.tvshow.tvshowapp.data.network
 
 import com.tvshow.tvshowapp.domain.model.TvShowModel
-import com.tvshow.tvshowapp.domain.model.detail.TvShowDetail
+import com.tvshow.tvshowapp.domain.model.response.TvShowDetailResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,10 +14,10 @@ interface TvShowService {
     @GET("show-details")
     suspend fun getTvShowDetails(
         @Query("q") permaLink: String
-    ): TvShowDetail
+    ): TvShowDetailResponse
 
     @GET("show-details")
     suspend fun getTvShowDetailsById(
         @Query("q") id: Int
-    ): TvShowDetail
+    ): TvShowDetailResponse
 }

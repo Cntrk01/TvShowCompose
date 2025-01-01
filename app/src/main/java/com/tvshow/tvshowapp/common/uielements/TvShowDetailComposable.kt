@@ -1,4 +1,4 @@
-package com.tvshow.tvshowapp.uielements
+package com.tvshow.tvshowapp.common.uielements
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
@@ -56,7 +56,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -78,32 +77,28 @@ import androidx.compose.ui.zIndex
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.tvshow.myapplication.R
-import com.tvshow.tvshowapp.domain.model.detail.Episode
-import com.tvshow.tvshowapp.domain.model.detail.TvShow
-import com.tvshow.tvshowapp.domain.model.detail.TvShowDescription
-import com.tvshow.tvshowapp.domain.model.detail.toTvShowDescription
-import com.tvshow.tvshowapp.uielements.Extensions.getColorFromResource
+import com.tvshow.tvshowapp.core.getColorFromResource
+import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
+import com.tvshow.tvshowapp.domain.model.response.Episode
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
 fun TvShowDetailComposable(
     modifier: Modifier = Modifier,
-    attribute: TvShow,
+    attribute: TvShowDetailAttr,
 ) {
     LazyColumn(
         modifier = modifier,
     ){
         item {
-            TvShowImageList(pictureList = attribute.pictures)
+            TvShowImageList(pictureList = attribute.imageList)
         }
         item {
-            TvShowDescription(attribute = attribute.toTvShowDescription())
+            TvShowDescription(attribute = attribute)
         }
         item {
             TvShowInformation(attribute = attribute)
@@ -113,7 +108,7 @@ fun TvShowDetailComposable(
 
 @Composable
 internal fun TvShowInformation(
-    attribute: TvShow
+    attribute: TvShowDetailAttr
 ){
     val tabTitles = listOf("Links", "Description", "Episodes")
 
@@ -175,13 +170,12 @@ internal fun TvShowInformation(
 @Composable
 fun TvShowEpisodeCard(
     modifier: Modifier = Modifier,
-    imagePainter: AsyncImagePainter?,
+    imagePainter: String?,
     episode: Episode,
     onHeightMeasured: (Dp) -> Unit,
     maxHeight: Dp,
 ) {
     val density = LocalDensity.current
-    val painterState = imagePainter?.state
 
     Card(
         modifier = modifier
@@ -199,38 +193,17 @@ fun TvShowEpisodeCard(
             horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            when (painterState) {
-                is AsyncImagePainter.State.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        TvShowLoadingComposable()
-                    }
-                }
-                is AsyncImagePainter.State.Error -> {
-                    Image(
-                        painter = painterResource(id = R.drawable.notfoundimage),
-                        contentDescription = "Episode Image",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp),
-                        contentScale = ContentScale.FillBounds
-                    )
-                }
-                is AsyncImagePainter.State.Success -> {
-                    Image(
-                        painter = imagePainter ?: painterResource(id = R.drawable.notfoundimage),
-                        contentDescription = "Episode Image",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp),
-                        contentScale = ContentScale.FillBounds
-                    )
-                }
-                else -> {}
-            }
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                model = imagePainter,
+                contentDescription = "Episode Image",
+                contentScale = ContentScale.FillBounds,
+                placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
+                error = painterResource(id = R.drawable.notfoundimage),
+            )
 
             Column(
                 modifier = Modifier.padding(8.dp),
@@ -264,7 +237,6 @@ fun TvShowEpisodeCard(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 internal fun EpisodesRow(imageUrl: String?, episodes: List<Episode>) {
-    val painter = rememberAsyncImagePainter(model = imageUrl)
     val maxHeight = mutableStateOf(0.dp)
 
     LazyRow(
@@ -275,7 +247,7 @@ internal fun EpisodesRow(imageUrl: String?, episodes: List<Episode>) {
             TvShowEpisodeCard(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp)),
-                imagePainter = painter,
+                imagePainter = imageUrl,
                 episode = episodes[index],
                 onHeightMeasured = {
                     if (it > maxHeight.value) {
@@ -395,7 +367,7 @@ internal fun TvShowImageList(pictureList: List<String>? = null) {
 
 @Composable
 internal fun TvShowDescription(
-    attribute: TvShowDescription,
+    attribute: TvShowDetailAttr,
 ) {
     Column (
         modifier = Modifier
@@ -443,8 +415,11 @@ internal fun TvShowDescription(
 
                             withStyle(
                                 style = SpanStyle(
-                                    color = if (label == "Status" && value == "Running") Color.Green else Color.Red.takeIf { label == "Status" }
-                                        ?: Color.Unspecified
+                                    color = if (label == "Status" && value == "Running")
+                                                Color.Green
+                                            else
+                                                Color.Red.takeIf { label == "Status" }
+                                            ?: Color.Unspecified
                                 )
                             ) {
                                 append(value.toString())
@@ -535,6 +510,7 @@ internal fun TvShowButton(
     }
 
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")
 @Composable
