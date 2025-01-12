@@ -407,7 +407,8 @@ internal fun TvShowDescription(
                     "Start Date" to (attribute.startDate ?: "Not Found"),
                     "End Date" to (attribute.endDate ?: "Not Found"),
                     "Rating " to (attribute.rating?.toDoubleOrNull() ?: "Not Found"),
-                    "Network " to (attribute.network ?: "Not Found")
+                    "Network " to (attribute.network ?: "Not Found"),
+                    "Country " to (attribute.country ?: "Not Found")
                 ).forEach { (label, value) ->
                     Text(
                         text = buildAnnotatedString {

@@ -17,12 +17,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val tvShowService: TvShowRepository,
     private val savedStateHandle: SavedStateHandle,
     private val detailPageUseCase: DetailPageUseCase,
 ) : ViewModel() {
 
-    //_tvShow değişkeninin durumu (StateFlow veya LiveData) doğrudan UI'ye bağlıdır, bu yüzden ViewModel'de kalmalıdır.
     private val _tvShow = MutableStateFlow(DetailPageState())
     val tvShow: StateFlow<DetailPageState> get() = _tvShow
     private var tvShowId : Any = ""

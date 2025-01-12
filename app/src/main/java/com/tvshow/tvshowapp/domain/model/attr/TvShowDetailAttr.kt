@@ -15,5 +15,6 @@ data class TvShowDetailAttr(
     val url : String?,
     val descriptionSource : String?,
     val youtubeLink : String?,
-    val episodes : List<Episode>?
+    val episodes : List<Episode>?,
+    val country : String?,
 )

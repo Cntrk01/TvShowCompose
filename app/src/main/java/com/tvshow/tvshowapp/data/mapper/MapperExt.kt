@@ -46,5 +46,6 @@ fun TvShowDetail.toTvShowDescription(): TvShowDetailAttr {
         descriptionSource = descriptionSource,
         youtubeLink = youtubeLink,
         episodes = episodes,
+        country = country,
     )
 }
