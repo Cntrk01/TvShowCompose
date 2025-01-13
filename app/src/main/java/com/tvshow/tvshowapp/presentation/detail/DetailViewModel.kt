@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tvshow.tvshowapp.data.mapper.toTvShowDescription
-import com.tvshow.tvshowapp.domain.repository.TvShowRepository
 import com.tvshow.tvshowapp.domain.usecase.DetailPageUseCase
 import com.tvshow.tvshowapp.common.Response
 import dagger.hilt.android.lifecycle.HiltViewModel

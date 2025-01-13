@@ -13,6 +13,7 @@ interface TvShowDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTvShow(tvShow: TvShowFavoriteAttr)
 
+    //tekte tüm dataları getirmicem sayfadaki bulunan kadar getiricem.Onun için bi bakacağım
     @Query("SELECT * FROM favorite")
     fun getAllTvShows(): Flow<List<TvShowFavoriteAttr>>
 
