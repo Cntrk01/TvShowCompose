@@ -21,7 +21,6 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val detailPageUseCase: DetailPageUseCase,
-    private val tvShowFavoriteRepository: TvShowFavoriteRepository,
 ) : ViewModel() {
 
     private val _tvShow = MutableStateFlow(DetailPageState())
@@ -57,7 +56,7 @@ class DetailViewModel @Inject constructor(
 
                 is Response.Success -> {
                     val tvShowData = responseValue.data
-                    
+
                     if (tvShowData != null) {
                         _tvShow.value =_tvShow.value.copy(
                             loading = false,
