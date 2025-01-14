@@ -7,4 +7,5 @@ interface TvShowFavoriteRepository {
     suspend fun insertTvShow(tvShow: TvShowFavoriteAttr)
     fun getAllTvShows(): Flow<List<TvShowFavoriteAttr>>
     suspend fun deleteTvShow(showId: String)
+    suspend fun isSavedTvShow(showId: String) : Boolean
 }

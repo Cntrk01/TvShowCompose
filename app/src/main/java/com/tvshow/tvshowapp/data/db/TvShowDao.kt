@@ -19,4 +19,7 @@ interface TvShowDao {
 
     @Query("DELETE FROM favorite WHERE showId = :showId")
     suspend fun deleteTvShow(showId: String)
+
+    @Query("SELECT * FROM favorite WHERE showId = :showId")
+    suspend fun isSavedTvShow(showId: String) : Boolean
 }

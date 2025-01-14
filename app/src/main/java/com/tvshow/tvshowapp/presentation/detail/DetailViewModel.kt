@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.tvshow.tvshowapp.data.mapper.toTvShowDescription
 import com.tvshow.tvshowapp.domain.usecase.DetailPageUseCase
 import com.tvshow.tvshowapp.common.Response
+import com.tvshow.tvshowapp.data.mapper.toTvShowFavorite
+import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
+import com.tvshow.tvshowapp.domain.repository.TvShowFavoriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +21,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val detailPageUseCase: DetailPageUseCase,
+    private val tvShowFavoriteRepository: TvShowFavoriteRepository,
 ) : ViewModel() {
 
     private val _tvShow = MutableStateFlow(DetailPageState())
@@ -34,7 +38,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun handleTvShowResponse() = viewModelScope.launch(Dispatchers.IO){
-        detailPageUseCase(showId = tvShowId).collectLatest { responseValue ->
+        detailPageUseCase.getDetailPageData(showId = tvShowId).collectLatest { responseValue ->
             when (responseValue) {
                 is Response.Loading ->
                     _tvShow.value = _tvShow.value.copy(
@@ -53,6 +57,7 @@ class DetailViewModel @Inject constructor(
 
                 is Response.Success -> {
                     val tvShowData = responseValue.data
+                    
                     if (tvShowData != null) {
                         _tvShow.value =_tvShow.value.copy(
                             loading = false,
@@ -69,5 +74,10 @@ class DetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun toggleFavorite(tvShow: TvShowDetailAttr) = viewModelScope.launch(Dispatchers.IO) {
+        val newFavoriteState = detailPageUseCase.toggleTvShowFavorite(tvShow)
+        _tvShow.value = _tvShow.value.copy(isSaved = newFavoriteState)
     }
 }

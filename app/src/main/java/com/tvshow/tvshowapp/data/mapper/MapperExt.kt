@@ -4,6 +4,7 @@ import com.tvshow.tvshowapp.domain.model.response.TvShowHomeResponse
 import com.tvshow.tvshowapp.domain.model.response.TvShowDetail
 import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
 import com.tvshow.tvshowapp.domain.model.attr.TvShowHomeAttr
+import com.tvshow.tvshowapp.domain.model.db.TvShowFavoriteAttr
 
 //Avantajları
 //TvShowDescription yalnızca gereken alanları içerdiği için, bu yapıyı kullanan diğer bileşenler (ör. UI katmanı) gereksiz verilere erişmeye çalışmaz. Bu, sınıfın sorumluluğunu daraltır.
@@ -33,6 +34,7 @@ fun TvShowHomeResponse.toShowMapper(): TvShowHomeAttr {
 
 fun TvShowDetail.toTvShowDescription(): TvShowDetailAttr {
     return TvShowDetailAttr(
+        id = id.toString(),
         name = name,
         status = status,
         startDate = startDate,
@@ -47,5 +49,23 @@ fun TvShowDetail.toTvShowDescription(): TvShowDetailAttr {
         youtubeLink = youtubeLink,
         episodes = episodes,
         country = country,
+    )
+}
+
+fun TvShowDetailAttr.toTvShowFavorite() : TvShowFavoriteAttr{
+    return TvShowFavoriteAttr(
+        showId = id.toString(),
+        showPictures = imageList ?: emptyList(),
+        showName = name ?: "",
+        showStatus = status ?: "",
+        showStartDate = startDate ?: "",
+        showEndDate = endDate.toString(),
+        showRating = rating ?: "",
+        showNetwork = network ?: "",
+        showCountry = country ?: "",
+        showUrl = url,
+        showDescriptionSource = descriptionSource,
+        showYoutubeLink = youtubeLink,
+        showEpisodes = episodes,
     )
 }
