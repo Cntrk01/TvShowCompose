@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
 import com.tvshow.tvshowapp.domain.model.db.TvShowFavoriteAttr
 import kotlinx.coroutines.flow.Flow
 
@@ -20,6 +21,9 @@ interface TvShowDao {
     @Query("DELETE FROM favorite WHERE showId = :showId")
     suspend fun deleteTvShow(showId: String)
 
+    @Query("SELECT COUNT(*) FROM  favorite WHERE showId = :showId")
+    suspend fun isSavedTvShow(showId: String): Boolean
+
     @Query("SELECT * FROM favorite WHERE showId = :showId")
-    suspend fun isSavedTvShow(showId: String) : Boolean
+    suspend fun getItemFromDb(showId: String) : TvShowFavoriteAttr?
 }

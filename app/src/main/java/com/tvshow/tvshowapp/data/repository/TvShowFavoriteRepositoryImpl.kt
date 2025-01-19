@@ -25,4 +25,8 @@ class TvShowFavoriteRepositoryImpl @Inject constructor(
     override suspend fun isSavedTvShow(showId: String): Boolean {
         return tvShowDao.isSavedTvShow(showId = showId)
     }
+
+    override suspend fun getItemFromDb(showId: String): TvShowFavoriteAttr? {
+        return tvShowDao.getItemFromDb(showId = showId)
+    }
 }

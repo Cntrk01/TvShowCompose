@@ -15,4 +15,7 @@
     <color name="websiteButton">#4E4E4E</color>
     <color name="sourceButton">#1C2DC8</color>
     <color name="youtubeButton">#BD2317</color>
+
+    <color name="starIconColor">#D0BD1E</color>
+    <color name="unStarIconColor">#FFFFFF</color>
 </resources>

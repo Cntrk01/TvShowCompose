@@ -67,5 +67,27 @@ fun TvShowDetailAttr.toTvShowFavorite() : TvShowFavoriteAttr{
         showDescriptionSource = descriptionSource,
         showYoutubeLink = youtubeLink,
         showEpisodes = episodes,
+        showImageThumbnail = imageThumbnailPath,
+        showDescription = description,
+    )
+}
+
+fun TvShowFavoriteAttr.toTvShowDetailAttr(): TvShowDetailAttr {
+    return TvShowDetailAttr(
+        id = showId,
+        name = showName,
+        status = showStatus,
+        startDate = showStartDate,
+        endDate = showEndDate,
+        rating = showRating,
+        network = showNetwork,
+        imageList = showPictures,
+        url = showUrl,
+        descriptionSource = showDescriptionSource,
+        youtubeLink = showYoutubeLink,
+        episodes = showEpisodes,
+        country = showCountry,
+        description = showDescription,
+        imageThumbnailPath = showImageThumbnail,
     )
 }
