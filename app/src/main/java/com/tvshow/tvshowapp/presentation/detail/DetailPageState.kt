@@ -7,4 +7,5 @@ data class DetailPageState(
     val error : String = "",
     val tvShow : TvShowDetailAttr? = null,
     val isShowAction : Boolean = false,
+    val isSaved : Boolean = false,
 )

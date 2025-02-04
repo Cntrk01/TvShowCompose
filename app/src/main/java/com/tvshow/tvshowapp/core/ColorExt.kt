@@ -9,6 +9,6 @@ import androidx.core.content.ContextCompat
 //fun getColorFromResource(colorResId: Int): Color {
 //    return Color(ContextCompat.getColor(LocalContext.current, colorResId))
 //}
-val getColorFromResource: @Composable (Int) -> Color = {
-    Color(ContextCompat.getColor(LocalContext.current, it))
+val getColorFromResource: @Composable (Int) -> Color = { thisColor->
+    Color(ContextCompat.getColor(LocalContext.current, thisColor))
 }
