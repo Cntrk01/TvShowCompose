@@ -41,7 +41,6 @@ class DetailViewModel @Inject constructor(
             val getDataFromDb = detailPageUseCase.getItemFromDb(showId = tvShowId.toString())
 
             if (getDataFromDb != null){
-                println("Dbden geldi.")
                 _tvShow.value =_tvShow.value.copy(
                     loading = false,
                     error = "",
