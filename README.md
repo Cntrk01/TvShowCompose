@@ -68,6 +68,6 @@ etc...</p>
 </ul>
 
 <h1>Görseller</h1>
-![1](https://github.com/user-attachments/assets/65a45a74-eb1f-45ca-a897-a944e339c4f4)
-![2](https://github.com/user-attachments/assets/26bded03-223f-4305-85ef-695127e4d2a5)
 
+
+![1](https://github.com/user-attachments/assets/7f989d13-86ff-48dc-918e-ccac890c1152)
