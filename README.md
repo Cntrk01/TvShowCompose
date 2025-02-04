@@ -70,8 +70,8 @@ etc...</p>
 <h1>Görseller</h1>
 
 <p align="center">
-  <img src="![1](https://github.com/user-attachments/assets/7f989d13-86ff-48dc-918e-ccac890c1152)" width="200" height="200">
-  <img src="![2](https://github.com/user-attachments/assets/e4a2b866-dc2e-43cf-829a-86e1b50ea9ab)" width="200" height="200">
+  <img src="(https://github.com/user-attachments/assets/7f989d13-86ff-48dc-918e-ccac890c1152)" width="200" height="200">
+  <img src="(https://github.com/user-attachments/assets/e4a2b866-dc2e-43cf-829a-86e1b50ea9ab)" width="200" height="200">
 </p>
 
 
