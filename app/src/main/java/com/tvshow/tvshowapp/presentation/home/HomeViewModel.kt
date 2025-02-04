@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.tvshow.tvshowapp.data.mapper.toShowMapper
 import com.tvshow.tvshowapp.domain.model.attr.TvShowHomeAttr
-import com.tvshow.tvshowapp.domain.repository.TvShowRepository
+import com.tvshow.tvshowapp.domain.repository.TvShowServiceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val tvShowRepository: TvShowRepository,
+    private val tvShowServiceRepository: TvShowServiceRepository,
 ) : ViewModel() {
 
     private val _tvShowPagingData = MutableStateFlow<PagingData<TvShowHomeAttr>>(PagingData.empty())
@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getTvShows() = viewModelScope.launch(Dispatchers.IO) {
-        tvShowRepository.getMostPopularTvShows()
+        tvShowServiceRepository.getMostPopularTvShows()
             //Bu mapping işlemini collectLatestta yapıyordum.Bu da her detaya gidip döndüğümde sayfanın en başına atmasına sebebiyet veriyordu.Aslında bir side effect yaratıyordu
             //Bunun sebebi de bizim cachedIn den sonra map işlemi yapıp akış zincirini bozmamız.Bundan dolayı da cachedIn yeni bir akışta çalıştırıyor.Eski cacheledimiz durumdan farklı bir durum çıktığı için uida böyle bir side effect çıkıyor
             //Şu durumda ise önce map işlemi yapılıyor.Daha sonrasında da cachedIn yeniden akış oluşturmayı engelleyerek aynı veri seti üzerinden çalışmasını devam etmesini sağlar.Varolan akış üzerine uygular.

@@ -10,6 +10,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -51,11 +53,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -90,12 +94,18 @@ import kotlin.math.absoluteValue
 fun TvShowDetailComposable(
     modifier: Modifier = Modifier,
     attribute: TvShowDetailAttr,
+    isFavorite: Boolean = false,
+    clickStar: () -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
     ){
         item {
-            TvShowImageList(pictureList = attribute.imageList)
+            TvShowImageList(
+                clickStar = clickStar,
+                pictureList = attribute.imageList,
+                isSaved = isFavorite,
+            )
         }
         item {
             TvShowDescription(attribute = attribute)
@@ -304,13 +314,23 @@ internal fun TvShowImagePager(
 }
 
 @Composable
-internal fun TvShowImageList(pictureList: List<String>? = null) {
+internal fun TvShowImageList(
+    clickStar: () -> Unit = {},
+    pictureList: List<String>? = null,
+    isSaved : Boolean = false
+) {
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = {
             pictureList?.size ?: 0
         }
     )
+
+    val starIconTint: Color = if (isSaved) {
+        colorResource(id = R.color.starIconColor)
+    } else {
+        colorResource(id = R.color.unStarIconColor)
+    }
 
     pictureList?.let { imageList ->
         Column(
@@ -319,6 +339,31 @@ internal fun TvShowImageList(pictureList: List<String>? = null) {
                 .fillMaxWidth(),
         ) {
             Box {
+                Box (
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .zIndex(1f)
+                        .size(50.dp)
+                        .padding(
+                            top = 15.dp,
+                            end = 15.dp
+                        )
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
+                            clickStar()
+                        },
+                    contentAlignment = Center,
+                ){
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        painter = rememberVectorPainter(image = Icons.Outlined.Star),
+                        contentDescription = "Star Icon",
+                        tint = starIconTint,
+                    )
+                }
+
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier
@@ -407,7 +452,8 @@ internal fun TvShowDescription(
                     "Start Date" to (attribute.startDate ?: "Not Found"),
                     "End Date" to (attribute.endDate ?: "Not Found"),
                     "Rating " to (attribute.rating?.toDoubleOrNull() ?: "Not Found"),
-                    "Network " to (attribute.network ?: "Not Found")
+                    "Network " to (attribute.network ?: "Not Found"),
+                    "Country " to (attribute.country ?: "Not Found")
                 ).forEach { (label, value) ->
                     Text(
                         text = buildAnnotatedString {

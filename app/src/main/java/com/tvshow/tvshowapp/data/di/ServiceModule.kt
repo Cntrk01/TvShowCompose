@@ -1,8 +1,8 @@
 package com.tvshow.tvshowapp.data.di
 
 import com.tvshow.tvshowapp.data.network.TvShowService
-import com.tvshow.tvshowapp.data.repository.TvShowRepositoryImpl
-import com.tvshow.tvshowapp.domain.repository.TvShowRepository
+import com.tvshow.tvshowapp.data.repository.TvShowServiceRepositoryImpl
+import com.tvshow.tvshowapp.domain.repository.TvShowServiceRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,7 +46,7 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideTvShowRepository(tvShowService: TvShowService): TvShowRepository {
-        return TvShowRepositoryImpl(tvShowService)
+    fun provideTvShowRepository(tvShowService: TvShowService): TvShowServiceRepository {
+        return TvShowServiceRepositoryImpl(tvShowService)
     }
 }

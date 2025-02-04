@@ -3,6 +3,7 @@ package com.tvshow.tvshowapp.domain.model.attr
 import com.tvshow.tvshowapp.domain.model.response.Episode
 
 data class TvShowDetailAttr(
+    val id : String?,
     val name : String?,
     val status : String?,
     val startDate : String?,
@@ -15,5 +16,6 @@ data class TvShowDetailAttr(
     val url : String?,
     val descriptionSource : String?,
     val youtubeLink : String?,
-    val episodes : List<Episode>?
+    val episodes : List<Episode>?,
+    val country : String?,
 )

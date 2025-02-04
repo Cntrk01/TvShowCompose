@@ -6,15 +6,15 @@ import androidx.paging.PagingData
 import com.tvshow.tvshowapp.data.network.TvShowService
 import com.tvshow.tvshowapp.domain.model.response.TvShowHomeResponse
 import com.tvshow.tvshowapp.domain.model.response.TvShowDetailResponse
-import com.tvshow.tvshowapp.domain.repository.TvShowRepository
+import com.tvshow.tvshowapp.domain.repository.TvShowServiceRepository
 import com.tvshow.tvshowapp.core.CustomExceptions
 import com.tvshow.tvshowapp.common.Response
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class TvShowRepositoryImpl(
+class TvShowServiceRepositoryImpl(
     private val tvShowService: TvShowService
-) : TvShowRepository {
+) : TvShowServiceRepository {
     override suspend fun getMostPopularTvShows(): Flow<PagingData<TvShowHomeResponse>> {
         return Pager(
             config = PagingConfig(

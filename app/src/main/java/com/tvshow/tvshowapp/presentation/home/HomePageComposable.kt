@@ -51,11 +51,11 @@ fun HomePageComposable(
                         indication = rememberRipple(color = Color.LightGray),
                         onClick = {
                             val result: Any = when {
-                                item.permaLink.isNotEmpty() -> {
-                                    item.permaLink
-                                }
                                 item.id != 0 -> {
                                     item.id
+                                }
+                                item.permaLink.isNotEmpty() -> {
+                                    item.permaLink
                                 }
                                 else -> {
                                     Toast.makeText(context,"No Link Found",Toast.LENGTH_SHORT).show()
