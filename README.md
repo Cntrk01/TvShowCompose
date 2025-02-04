@@ -66,3 +66,7 @@ etc...</p>
 <p>ENG : UI/UX working can be done.</p>
 </li>
 </ul>
+
+<h1>Görseller</h1>
+![1](https://github.com/user-attachments/assets/bd26c33f-a641-4423-b656-6baf66db3fe4)
+![2](https://github.com/user-attachments/assets/71409bc3-fd35-4928-90f4-4094d5164ad3)
