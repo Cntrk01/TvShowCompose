@@ -70,8 +70,8 @@ etc...</p>
 <h1>Görseller</h1>
 
 <p align="center">
-  <img src="assets/1.png" width="200">
-  <img src="assets/2.png" width="200">
+  <img src="assets/1.png" width="230">
+  <img src="assets/2.png" width="230">
 </p>
 
 
