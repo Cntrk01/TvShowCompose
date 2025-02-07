@@ -13,6 +13,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * 07.02.2025
+ * fallbackToDestructiveMigration() =
+ * Eski veritabanı şemalarını en son versiyona taşırken geçiş kümesi bulunmazsa `IllegalStateException` fırlatılır.
+ * Ancak bu yöntem, tabloyu yıkıp tekrar oluşturarak hatayı önler.
+ */
+
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
@@ -26,8 +33,7 @@ object DatabaseModule {
             context = application,
             name = "TvShowFavorite.db",
             klass = TvShowDatabase::class.java,
-        ).allowMainThreadQueries() //main threadde sorgu çalıştırılmasının önüne geçer.ANR hatasına sebeb verebilir bunun sebebide uzun süren sorgular olabilir.Bloke edebilir
-         .fallbackToDestructiveMigration() //eski veritabanı şemalarını en son versiona taşırken geçiş kümesi bulunmasa IllegalStateException atılır.Fakat bu methodla tablo yıkılıp tekrar oluşur böylelikle hata almamak için kullanılır.
+        ).fallbackToDestructiveMigration()
          .build()
     }
 

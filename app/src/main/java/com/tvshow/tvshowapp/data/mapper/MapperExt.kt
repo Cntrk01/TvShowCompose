@@ -6,19 +6,20 @@ import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
 import com.tvshow.tvshowapp.domain.model.attr.TvShowHomeAttr
 import com.tvshow.tvshowapp.domain.model.db.TvShowFavoriteAttr
 
-//Avantajları
-//TvShowDescription yalnızca gereken alanları içerdiği için, bu yapıyı kullanan diğer bileşenler (ör. UI katmanı) gereksiz verilere erişmeye çalışmaz. Bu, sınıfın sorumluluğunu daraltır.
-//TvShow sınıfına yeni alanlar eklenirse, bu değişiklik TvShowDescription ve onu kullanan bileşenleri etkilemez. Bu, kodun bakımını kolaylaştırır.
-//Örneğin, RecyclerView gibi bir liste görünümü kullanıyorsanız, her satırda yalnızca ihtiyaç duyulan verilerin işlenmesi, performansı artırır.
-//Çok büyük veri yapılarıyla çalışıyorsanız,
-//UI odaklı, hafif ve optimize edilmiş modeller istiyorsanız,
-//API çağrılarında veri miktarını azaltmak istiyorsanız önemlidir. (bellek ve performans açısından avantaj saglar )
-
-//Dezavantajları
-//Ekstra Dönüşüm Maliyeti:
-//TvShow'dan TvShowDescription gibi bir sınıfa dönüşüm işlemi küçük bir maliyet yaratabilir. Ancak bu genelde ihmal edilebilir düzeydedir.
-//Fazladan Kod:
-//Yeni bir sınıf ve dönüşüm fonksiyonu yazmak kodu artırır. Ancak, bu genelde daha iyi yapılandırılmış ve sürdürülebilir bir kod tabanı sağlar.
+/**
+ * `TvShowDescription` sınıfının kullanım avantajları ve dezavantajları.
+ *
+ * ### Avantajları:
+ * - **Gereksiz Verilere Erişimi Engeller**: `TvShowDescription`, yalnızca gereken alanları içerdiğinden, UI katmanı gibi bileşenler gereksiz verilere erişmeye çalışmaz. Bu, sınıfın sorumluluğunu daraltır.
+ * - **Bakımı Kolaylaştırır**: `TvShow` sınıfına yeni alanlar eklenirse, bu değişiklik `TvShowDescription` ve onu kullanan bileşenleri etkilemez.
+ * - **Performansı Artırır**: Örneğin, `RecyclerView` gibi liste bileşenleri, yalnızca ihtiyaç duyulan verileri işleyerek performans açısından avantaj sağlar.
+ * - **Hafif ve Optimize Edilmiş Modeller**: Büyük veri yapılarıyla çalışırken, UI odaklı ve optimize edilmiş modeller kullanmak bellek yönetimi açısından daha verimlidir.
+ * - **Daha Verimli API Çağrıları**: API çağrılarında veri miktarını azaltarak bellek kullanımını düşürür ve performansı artırır.
+ *
+ * ### Dezavantajları:
+ * - **Ekstra Dönüşüm Maliyeti**: `TvShow` nesnesini `TvShowDescription` nesnesine dönüştürmek küçük bir maliyet yaratabilir, ancak genellikle ihmal edilebilir düzeydedir.
+ * - **Fazladan Kod Yazımı**: Yeni bir sınıf ve dönüşüm fonksiyonu oluşturmak kod miktarını artırır, ancak bu genellikle daha iyi yapılandırılmış ve sürdürülebilir bir kod tabanı sağlar.
+ */
 
 fun TvShowHomeResponse.toShowMapper(): TvShowHomeAttr {
     return TvShowHomeAttr(
