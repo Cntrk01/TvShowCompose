@@ -18,7 +18,7 @@ fun TvShowErrorComposable(
     errorMessage: String,
     isRetryAvailable: Boolean = false,
     retryAction: () -> Unit = {},
-): Unit {
+) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
