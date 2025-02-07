@@ -28,6 +28,21 @@ import com.tvshow.tvshowapp.common.uielements.TvShowLoadingComposable
 import com.tvshow.tvshowapp.core.errorMessage
 import com.tvshow.tvshowapp.core.isRetryAvailable
 
+/**
+ * loadState.refresh is LoadState.Error =
+ *  Sayfalama işlemine başlandığında.
+ *  Veri kaynağı (örneğin, bir API veya veri tabanı) sıfırdan yüklenirken.
+ *
+ * loadState.prepend is LoadState.Error =
+ *  Kullanıcı listeyi yukarı kaydırarak önceki öğelere ulaşmaya çalıştığında tetiklenir.
+ *  Bir kullanıcı listenin ilk öğesine ulaşıp daha eski verileri yüklemek istediğinde bir hata olursa, bu prepend durumunda görülür.
+ *
+ * loadState.append is LoadState.Error =
+ *  Bir kullanıcı 20. öğeyi kaydırdıktan sonra, 21-40. öğeleri yükleme sırasında bir hata olursa,
+ *  bu append durumunda yer alır.
+ *
+ * */
+
 @Composable
 fun HomePageComposable(
     modifier: Modifier = Modifier,
@@ -88,8 +103,6 @@ fun HomePageComposable(
                     }
                 }
 
-                //Sayfalama işlemine başlandığında.
-                //Veri kaynağı (örneğin, bir API veya veri tabanı) sıfırdan yüklenirken.
                 loadState.refresh is LoadState.Error -> {
                     val error = loadState.refresh as LoadState.Error
                     val errorMessage = error.errorMessage()
@@ -103,8 +116,7 @@ fun HomePageComposable(
                         )
                     }
                 }
-                //Kullanıcı listeyi yukarı kaydırarak önceki öğelere ulaşmaya çalıştığında tetiklenir.
-                //Bir kullanıcı listenin ilk öğesine ulaşıp daha eski verileri yüklemek istediğinde bir hata olursa, bu prepend durumunda görülür.
+
                 loadState.prepend is LoadState.Error -> {
                     val error = loadState.prepend as LoadState.Error
                     val errorMessage = error.errorMessage()
@@ -118,8 +130,7 @@ fun HomePageComposable(
                         )
                     }
                 }
-                //Bir kullanıcı 20. öğeyi kaydırdıktan sonra, 21-40. öğeleri yükleme sırasında bir hata olursa,
-                //bu append durumunda yer alır.
+
                 loadState.append is LoadState.Error -> {
                     val error = loadState.append as LoadState.Error
                     val errorMessage = error.errorMessage()

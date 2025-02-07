@@ -6,11 +6,22 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeoutException
 
-//Companion objecte yazdığım bu method ile constructor görevi sağlar.
-//sealed class Tanımlandığı paket dışında bir daha impl edilmesini istemedim.Nesne de oluşturulamaz.Miras edilebilir.
-//enummlara benzer ama daha geniş kullanım alanı var.;
-//sealed class imp eden tüm classlar compile timda tüm impl tipi biliniyor.
-//Genelde alacağım hatalar üzerinde çalışma yaparak tanımlama yaptım.Bilmediğim durum varsa CustomError tanımladım.
+/**
+ * 07.02.2025
+ * Companion object içinde tanımlanan bu metot, bir constructor görevi görür.
+ *
+ * ### `sealed class` Özellikleri:
+ * - **Tanımlandığı Paketin Dışında Implement Edilemez**: `sealed class`, yalnızca tanımlandığı paket içinde genişletilebilir.
+ * - **Nesne Olarak Oluşturulamaz**: Doğrudan bir örneği oluşturulamaz, ancak alt sınıfları türetilebilir.
+ * - **Miras Alınabilir**: Alt sınıflar tarafından genişletilebilir.
+ * - **Enum'lara Benzer Ancak Daha Esnek**: `enum` sınıflarına benzese de daha geniş kullanım alanına sahiptir.
+ * - **Tüm Implementasyonlar Compile Time'da Bilinir**: `sealed class` implement eden tüm alt sınıflar derleme zamanında bilinir.
+ *
+ * ### Kullanım Amacı:
+ * - Belirli hata türlerini yönetmek için tasarlandı.
+ * - Bilinen hata durumları için özel alt sınıflar tanımlandı.
+ * - Bilinmeyen hata durumlarını yakalamak için `CustomError` sınıfı oluşturuldu.
+ */
 sealed class CustomExceptions(
     open val isShowAction : Boolean = false,
     open val exceptionCode : Int = 0,

@@ -12,36 +12,57 @@ import com.tvshow.tvshowapp.common.Response
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+/**
+ *  07.02.2025
+ * PagingConfig() =
+ * @param pageSize Bir sayfada bulunacak öğe sayısını temsil eder.
+
+ * @param prefetchDistance Kullanıcı, listedeki son öğelere yaklaştığında kaç öğe kala yeni verinin yüklenmesi gerektiğini belirtir.
+ * Örneğin, `prefetchDistance = 2` olduğunda, kullanıcı son 2 öğeye yaklaştığında yeni veri yüklenir.
+
+ * @param enablePlaceholders Sayfalanmamış veriler için `null` placeholder'ların kullanılıp kullanılmayacağını belirtir.
+ * `false` olarak ayarlandığında eksik veriler için placeholder kullanılmaz.
+
+ * @param initialLoadSize İlk yükleme sırasında getirilecek veri sayısını belirler.
+ * Örneğin, `initialLoadSize = 10` olduğunda başlangıçta 10 veri yüklenir.
+
+ * @param maxSize Bellekte tutulabilecek maksimum öğe sayısını belirtir.
+ * Örneğin, `maxSize = 100` olduğunda, 101. öğe geldiğinde ilk 10 öğe silinir (`pageSize` değeri 10 olduğu için 1-10 arasındaki öğeler kaldırılır).
+ * Eğer kullanıcı ilk sayfaya geri dönerse, bu veriler tekrar yüklenecektir.
+
+ * @param jumpThreshold Kullanıcı liste üzerinde büyük bir mesafe kaydırdığında, sayfalama sistemi eski yöntemle sayfa sayfa veri çekmek yerine,
+ * doğrudan belirtilen konumdan veri çekmek için `REFRESH` işlemi tetikler.
+ * Örneğin, `jumpThreshold = 50` olarak ayarlandığında, kullanıcı 50 öğe birden atlarsa, hedef sayfa doğrudan yüklenir.
+ * !!!! `jumpThreshold` özelliğini kullanmak için `TvShowPagingSource` içinde `jumpingSupported` metodunu `true` olarak override etmek gerekir. !!!!!!
+
+ * remoteMediator = `RemoteMediator`, API ve veritabanı arasında köprü kurarak sayfalı veri yüklemeyi yönetir.
+ * ### Temel Amaçları:
+ * - **API ve Veritabanı Arasında Köprü Kurar**: API'den verileri alır ve veritabanına kaydeder.
+ * - **Yerel Veri Kaynağını Önceliklendirir**: UI, verileri doğrudan veritabanından çeker; API'den gelen veriler arka planda güncellenir.
+ * - **Çevrimdışı Destek Sağlar**: Önceden önbelleğe alınmış verilerle uygulama çevrimdışı çalışabilir.
+ * - **Sayfalı Veri Yükleme**: API’den gelen veriler, veritabanına sayfa sayfa kaydedilir.
+ *
+ * ### Çalışma Mantığı:
+ * 1. UI veri talep eder.
+ * 2. Veri öncelikle veritabanından okunur.
+ * 3. Veritabanında veri yoksa veya güncelleme gerekiyorsa, `RemoteMediator` API'den veri çeker.
+ * 4. API’den gelen veri veritabanına yazılır.
+ * 5. UI, güncellenmiş veriyi veritabanından çeker ve görüntüler.
+ */
+
 class TvShowServiceRepositoryImpl(
     private val tvShowService: TvShowService
 ) : TvShowServiceRepository {
     override suspend fun getMostPopularTvShows(): Flow<PagingData<TvShowHomeResponse>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 10, //1 sayfada olcak item sayısını temsil eder
-                prefetchDistance = 2, // Kullanıcı 2 son iteme yaklaştığında yeni veri yükle
-                enablePlaceholders = false, //Sayfalanmamış veriler için null placeholder'ların kullanılıp kullanılmayacağını belirtir.
-                initialLoadSize = 10, //İlk yüklemede 20 veri getirecek.
-                maxSize = 100, // Bellekte en fazla 100 veri tut.Burdada şöyle oluyor 101. veriye geldiği anda ilk 1-10 veriyi silecektir(pageSize değerine 10 dedim ondan 1-10).Eğer geri ilk sayafaya kadar dönersek geri yükleyecek.
-                //jumpThreshold = 50,//Kullanıcı liste üzerinde çok büyük bir mesafe kaydırdığında, sayfalama sistemi eski yöntemle sayfa sayfa veri çekmek yerine, doğrudan belirtilen konumdan veri çekmek için REFRESH tetikler.
-                //Bu yaklaşım, büyük sıçramalarda daha verimli bir veri yükleme sağlar ve gereksiz ara yüklemeleri önler.
-                //Şuanda 50 öge birden zıplarsa gittiği hedefteki sayfayı yani hangi sayfaya gittiyse onu yükleyecek.
-                //jumpTresholdu çalıştırmak istiyorsan TvShowPagingSource içerisinde jumpingSupported override etmem gerekli ! bunuda true setlemeliyim
+                pageSize = 10,
+                prefetchDistance = 2,
+                enablePlaceholders = false,
+                initialLoadSize = 10,
+                maxSize = 100,
             ),
             pagingSourceFactory = { TvShowPagingSource(tvShowService) },
-            //remoteMediator =
-            //RemoteMediator'ın Temel Amacı
-            //API ve Veritabanı Arasında Köprü Kurar: API'den verileri alır ve veritabanına yazar.
-            //Yerel Veri Kaynağını Önceliklendirir: UI verileri doğrudan veritabanından çeker, API'den gelen veriler arka planda güncellenir.
-            //Çevrimdışı Destek Sağlar: Veritabanında önbelleğe alınan verilerle uygulama çevrimdışı çalışabilir.
-            //Sayfalı Veri Yükleme: API'den gelen veriler veritabanına sayfa sayfa kaydedilir.
-
-            //RemoteMediator Çalışma Mantığı
-            //UI veri talep eder.
-            //Veri öncelikle veritabanından okunur.
-            //Veritabanında veri yoksa veya güncelleme gerekiyorsa, RemoteMediator API'den veri çeker.
-            //API’den gelen veri veritabanına yazılır.
-            //UI, güncellenmiş veriyi veritabanından çeker ve gösterir.
         ).flow
     }
 
