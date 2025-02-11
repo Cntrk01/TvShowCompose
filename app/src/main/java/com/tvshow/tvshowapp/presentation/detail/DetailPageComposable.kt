@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tvshow.tvshowapp.common.uielements.TvShowDetailComposable
 import com.tvshow.tvshowapp.common.uielements.TvShowLoadingComposable
 import com.tvshow.tvshowapp.navigation.Route
@@ -25,7 +26,7 @@ fun DetailPageComposable(
     modifier: Modifier = Modifier,
 ){
     val viewModel : DetailViewModel = hiltViewModel()
-    val detailItem by viewModel.tvShow.collectAsState()
+    val detailItem by viewModel.tvShow.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
