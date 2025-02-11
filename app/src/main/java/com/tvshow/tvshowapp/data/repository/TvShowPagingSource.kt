@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.tvshow.tvshowapp.data.network.TvShowService
 import com.tvshow.tvshowapp.domain.model.response.TvShowHomeResponse
-import com.tvshow.tvshowapp.core.CustomExceptions
+import com.tvshow.tvshowapp.common.exceptions.CustomExceptions
 
 class TvShowPagingSource(
     private val tvShowService: TvShowService

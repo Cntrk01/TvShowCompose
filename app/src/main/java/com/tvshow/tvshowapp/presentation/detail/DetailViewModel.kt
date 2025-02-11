@@ -3,9 +3,10 @@ package com.tvshow.tvshowapp.presentation.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tvshow.tvshowapp.common.base.BaseViewModel
 import com.tvshow.tvshowapp.data.mapper.toTvShowDescription
 import com.tvshow.tvshowapp.domain.usecase.DetailPageUseCase
-import com.tvshow.tvshowapp.common.Response
+import com.tvshow.tvshowapp.common.response.Response
 import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val detailPageUseCase: DetailPageUseCase,
-) : ViewModel() {
+) : BaseViewModel(Dispatchers) {
 
     private val _tvShow = MutableStateFlow(DetailPageState())
     val tvShow: StateFlow<DetailPageState> get() = _tvShow
@@ -30,11 +31,11 @@ class DetailViewModel @Inject constructor(
         handleTvShowResponse()
     }
 
-    fun retryGetTvShow() = viewModelScope.launch(Dispatchers.IO){
+    fun retryGetTvShow() = launchOnIO {
         handleTvShowResponse()
     }
 
-    private fun handleTvShowResponse() = viewModelScope.launch(Dispatchers.IO){
+    private fun handleTvShowResponse() = launchOnIO {
         val checkItemHasDb = detailPageUseCase.checkIsItemFavorite(showId = tvShowId.toString())
 
         if (checkItemHasDb){
@@ -96,7 +97,7 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun starItemFavorite(tvShow: TvShowDetailAttr) = viewModelScope.launch(Dispatchers.IO) {
+    fun starItemFavorite(tvShow: TvShowDetailAttr) = launchOnIO {
         val newFavoriteState = detailPageUseCase.starItemFavorite(tvShow)
         _tvShow.value = _tvShow.value.copy(isSaved = newFavoriteState)
     }

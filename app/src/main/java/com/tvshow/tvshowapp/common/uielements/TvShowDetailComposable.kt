@@ -84,7 +84,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.tvshow.myapplication.R
-import com.tvshow.tvshowapp.core.getColorFromResource
+import com.tvshow.tvshowapp.common.ext.getColorFromResource
 import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
 import com.tvshow.tvshowapp.domain.model.response.Episode
 import kotlinx.coroutines.launch
