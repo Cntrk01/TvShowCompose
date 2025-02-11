@@ -7,8 +7,8 @@ import com.tvshow.tvshowapp.data.network.TvShowService
 import com.tvshow.tvshowapp.domain.model.response.TvShowHomeResponse
 import com.tvshow.tvshowapp.domain.model.response.TvShowDetailResponse
 import com.tvshow.tvshowapp.domain.repository.TvShowServiceRepository
-import com.tvshow.tvshowapp.core.CustomExceptions
-import com.tvshow.tvshowapp.common.Response
+import com.tvshow.tvshowapp.common.exceptions.CustomExceptions
+import com.tvshow.tvshowapp.common.response.Response
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

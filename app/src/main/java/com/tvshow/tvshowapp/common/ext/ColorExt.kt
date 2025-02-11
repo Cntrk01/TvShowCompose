@@ -1,4 +1,4 @@
-package com.tvshow.tvshowapp.core
+package com.tvshow.tvshowapp.common.ext
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
