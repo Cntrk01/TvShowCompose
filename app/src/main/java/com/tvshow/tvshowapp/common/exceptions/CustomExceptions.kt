@@ -1,4 +1,4 @@
-package com.tvshow.tvshowapp.core
+package com.tvshow.tvshowapp.common.exceptions
 
 import com.google.gson.JsonParseException
 import kotlinx.coroutines.TimeoutCancellationException

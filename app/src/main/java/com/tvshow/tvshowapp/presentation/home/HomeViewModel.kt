@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.tvshow.tvshowapp.common.base.BaseViewModel
 import com.tvshow.tvshowapp.data.mapper.toShowMapper
 import com.tvshow.tvshowapp.domain.model.attr.TvShowHomeAttr
 import com.tvshow.tvshowapp.domain.repository.TvShowServiceRepository
@@ -36,7 +37,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val tvShowServiceRepository: TvShowServiceRepository,
-) : ViewModel() {
+) : BaseViewModel(Dispatchers) {
 
     private val _tvShowPagingData = MutableStateFlow<PagingData<TvShowHomeAttr>>(PagingData.empty())
     val tvShowPagingData: StateFlow<PagingData<TvShowHomeAttr>> = _tvShowPagingData
@@ -45,7 +46,7 @@ class HomeViewModel @Inject constructor(
         getTvShows()
     }
 
-    private fun getTvShows() = viewModelScope.launch(Dispatchers.IO) {
+    private fun getTvShows() = launchOnIO {
         tvShowServiceRepository.getMostPopularTvShows()
             .map {
                 it.map { pagingData ->

@@ -1,11 +1,10 @@
 package com.tvshow.tvshowapp.domain.usecase
 
-import com.tvshow.tvshowapp.common.Response
-import com.tvshow.tvshowapp.core.CustomExceptions
+import com.tvshow.tvshowapp.common.response.Response
+import com.tvshow.tvshowapp.common.exceptions.CustomExceptions
 import com.tvshow.tvshowapp.data.mapper.toTvShowDetailAttr
 import com.tvshow.tvshowapp.data.mapper.toTvShowFavorite
 import com.tvshow.tvshowapp.domain.model.attr.TvShowDetailAttr
-import com.tvshow.tvshowapp.domain.model.db.TvShowFavoriteAttr
 import com.tvshow.tvshowapp.domain.model.response.TvShowDetailResponse
 import com.tvshow.tvshowapp.domain.repository.TvShowFavoriteRepository
 import com.tvshow.tvshowapp.domain.repository.TvShowServiceRepository

@@ -1,6 +1,6 @@
-package com.tvshow.tvshowapp.common
+package com.tvshow.tvshowapp.common.response
 
-import com.tvshow.tvshowapp.core.CustomExceptions
+import com.tvshow.tvshowapp.common.exceptions.CustomExceptions
 
 sealed class Response<T>(
     val data: T? = null,
